@@ -4,7 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { restorants } from "../../mock";
 import { Checkbox } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";

@@ -1,3 +1,5 @@
+import { dishesT } from "./types";
+
 export const restorants = [
   {
     id: 1,
@@ -11,7 +13,7 @@ export const restorants = [
     language: "en",
     image:
       "https://optim.tildacdn.com/tild3233-3731-4365-b166-366333666635/-/resize/960x/-/format/webp/restaurant-projectio.jpg",
-    logo: "image1.jpg",
+    logo: "https://marketplace.canva.com/EAFaFUz4aKo/2/0/400w/canva-yellow-abstract-cooking-fire-free-logo-8iEUG5R0yQ4.jpg",
     location: "44.812619, 20.424597",
     range: 4.8,
   },
@@ -27,11 +29,24 @@ export const restorants = [
     language: "ru",
     image:
       "https://static.tildacdn.com/tild3661-3133-4863-a265-383965306461/IMG_6103.jpg",
-    logo: "image1.jpg",
+    logo: "https://marketplace.canva.com/EAFaFUz4aKo/2/0/400w/canva-yellow-abstract-cooking-fire-free-logo-8iEUG5R0yQ4.jpg",
     location: "41.812619, 21.424597",
     range: 4.4,
   },
 ];
+
+// TODO: для слайдера с предложениями для клиентов, надо продумать
+// export const restorantsInfo = {
+//   restorantId: 1,
+//   data: [
+//     {
+//       image:
+//         "https://static.tildacdn.com/tild3661-3133-4863-a265-383965306461/IMG_6103.jpg",
+//       title: "Image",
+//       description: "Description 1",
+//     },
+//   ],
+// };
 
 export const dishesGroup = [
   { id: 1, name: "Group 1" },
@@ -42,17 +57,19 @@ export const dishesGroup = [
   { id: 6, name: "Group 6" },
 ];
 
-export const dishes = [
+export const dishes: dishesT[] = [
   {
     id: 1,
     restorantId: 1,
     name: "Dish 1",
-    price: 10,
+    price: 100000,
+    weight: 300,
     description: "Description 1",
     image:
       "https://aif-s3.aif.ru/images/015/573/91c0d7c133aa580e0c368bb536b053a1.jpg",
     range: 5,
-    compound: "compound",
+    compound:
+      "compound, compound, compound, compound, compound, compound, compound, compound",
     groupId: 1,
   },
   {
@@ -60,6 +77,7 @@ export const dishes = [
     restorantId: 1,
     name: "Dish 2",
     price: 10,
+    weight: 300,
     description: "Description 2",
     image:
       "https://regionorel.ru/upload/iblock/cf3/cf39bf0b1c38f0b6003dca5ad506fde4.jpeg",
@@ -72,6 +90,7 @@ export const dishes = [
     restorantId: 1,
     name: "Dish 3",
     price: 10,
+    weight: 300,
     description: "Description 3",
     image:
       "https://regionorel.ru/upload/iblock/cf3/cf39bf0b1c38f0b6003dca5ad506fde4.jpeg",
@@ -84,6 +103,7 @@ export const dishes = [
     restorantId: 1,
     name: "Dish 4",
     price: 10,
+    weight: 300,
     description: "Description 4",
     image:
       "https://regionorel.ru/upload/iblock/cf3/cf39bf0b1c38f0b6003dca5ad506fde4.jpeg",
@@ -96,6 +116,7 @@ export const dishes = [
     restorantId: 1,
     name: "Dish 5",
     price: 10,
+    weight: 300,
     description: "Description 5",
     image:
       "https://regionorel.ru/upload/iblock/cf3/cf39bf0b1c38f0b6003dca5ad506fde4.jpeg",
@@ -108,6 +129,7 @@ export const dishes = [
     restorantId: 1,
     name: "Dish 6",
     price: 10,
+    weight: 300,
     description: "Description 6",
     image:
       "https://regionorel.ru/upload/iblock/cf3/cf39bf0b1c38f0b6003dca5ad506fde4.jpeg",
@@ -120,6 +142,7 @@ export const dishes = [
     restorantId: 1,
     name: "Dish 7",
     price: 10,
+    weight: 300,
     description: "Description 7",
     image:
       "https://regionorel.ru/upload/iblock/cf3/cf39bf0b1c38f0b6003dca5ad506fde4.jpeg",
@@ -132,6 +155,7 @@ export const dishes = [
     restorantId: 1,
     name: "Dish 11",
     price: 10,
+    weight: 300,
     description: "Description 2",
     image:
       "https://regionorel.ru/upload/iblock/cf3/cf39bf0b1c38f0b6003dca5ad506fde4.jpeg",
@@ -144,6 +168,7 @@ export const dishes = [
     restorantId: 1,
     name: "Dish 22",
     price: 10,
+    weight: 300,
     description: "Description 2",
     image:
       "https://regionorel.ru/upload/iblock/cf3/cf39bf0b1c38f0b6003dca5ad506fde4.jpeg",
@@ -159,12 +184,19 @@ export const group_dishes = [
   { id: 3, name: "Group Dish 3" },
 ];
 
-export const currencies = [
-  { currency: "USD", symbol: "$" },
-  { currency: "RUB", symbol: "₽" },
-  { currency: "RSD", symbol: "din" },
-  { currency: "KZT", symbol: "₸" },
-];
+export const currencies: Record<string, string> = {
+  USD: "$",
+  RUB: "₽",
+  RSD: "din",
+  KZT: "₸",
+};
+
+// export const currencies = [
+//   { currency: "USD", symbol: "$" },
+//   { currency: "RUB", symbol: "₽" },
+//   { currency: "RSD", symbol: "din" },
+//   { currency: "KZT", symbol: "₸" },
+// ];
 
 export const languages = [
   { id: "en", name: "English" },
