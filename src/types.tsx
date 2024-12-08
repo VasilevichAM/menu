@@ -10,3 +10,19 @@ export type dishesT = {
   compound: string;
   groupId: number;
 };
+
+export type restorantsT = {
+  id: 1;
+  name: string;
+  type: string;
+  city: string;
+  address: string;
+  phone: string;
+  email: string;
+  currency: string;
+  language: string;
+  image: string;
+  logo?: string;
+  location?: string;
+  range?: 4.8;
+};

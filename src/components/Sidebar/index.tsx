@@ -20,7 +20,7 @@ import {
   // Button,
   Tab,
   Tabs,
-  useScrollTrigger,
+  // useScrollTrigger,
 } from "@mui/material";
 
 // const pages = ["Products", "Pricing", "Blog"];
@@ -35,23 +35,23 @@ interface Props {
   children?: React.ReactElement<{ elevation?: number }>;
 }
 
-function ElevationScroll(props: Props) {
-  const { children, window } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 0,
-    target: window ? window() : undefined,
-  });
+// function ElevationScroll(props: Props) {
+//   const { children, window } = props;
+//   // Note that you normally won't need to set the window ref as useScrollTrigger
+//   // will default to window.
+//   // This is only being set here because the demo is in an iframe.
+//   const trigger = useScrollTrigger({
+//     disableHysteresis: true,
+//     threshold: 0,
+//     target: window ? window() : undefined,
+//   });
 
-  return children
-    ? React.cloneElement(children, {
-        elevation: trigger ? 4 : 0,
-      })
-    : null;
-}
+//   return children
+//     ? React.cloneElement(children, {
+//         elevation: trigger ? 4 : 0,
+//       })
+//     : null;
+// }
 
 function Sidebar(props: Props) {
   const { id = "0" } = useParams<{ id: string }>();
@@ -85,8 +85,8 @@ function Sidebar(props: Props) {
   console.log(language, "languageFistTwo");
   const [value, setValue] = React.useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    // console.log(newValue, "newValue");
-    // document.location.href = `#${newValue}`; //// ????
+    console.log(newValue, "newValue");
+    document.location.href = `#${newValue}`; //// ????
     // if (groupRefs.current && groupRefs.current[newValue]) {
     //   (groupRefs?.current[newValue] as any).scrollIntoView({
     //     behavior: "smooth",
@@ -102,158 +102,56 @@ function Sidebar(props: Props) {
           width: "100%",
           height: "16rem",
           backgroundImage: `url(${restorant?.image})`,
+          backgroundSize: "contain",
+          position: "absolute",
+          top: 0,
         }}
       />
-      <ElevationScroll {...props}>
-        <AppBar position="sticky" color="inherit">
-          <Container maxWidth="xl" style={{ paddingBottom: "0.5rem" }}>
-            <Toolbar disableGutters>
-              {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
-              {/* <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+      <AppBar
+        position="sticky"
+        color="inherit"
+        elevation={0}
+        style={{ borderRadius: "1rem 1rem 0 0", marginTop: "14.5rem" }}
+      >
+        <Container maxWidth="xl" sx={{ padding: 0 }}>
+          <Toolbar disableGutters>
+            <Typography
+              variant="h4"
+              noWrap
+              sx={{
+                paddingLeft: "1rem",
+                display: { xs: "flex", md: "none" },
+                flexGrow: 1,
+                fontFamily: "monospace",
+                fontWeight: 700,
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              {restorant?.name || "Logo"}
+            </Typography>
+          </Toolbar>
+          <Box
             sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
+              borderBottom: 1,
+              borderColor: "divider",
+              backgroundColor: "white",
             }}
           >
-            {restorant?.name}
-          </Typography> */}
-
-              {/* <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              variant="scrollable"
+              scrollButtons="auto"              
+              aria-label="scrollable auto tabs example"
             >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: "block", md: "none" } }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
-                </MenuItem>
+              {dishesGroup.map((group) => (
+                <Tab key={group.id} label={group.name} />
               ))}
-            </Menu>
-          </Box> */}
-              {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
-              {/* <Avatar
-                alt={restorant?.name || "Logo"}
-                src={restorant?.logo || "Logo"}
-              /> */}
-              <Typography
-                variant="h5"
-                noWrap
-                component="a"
-                href="#app-bar-with-responsive-menu"
-                sx={{
-                  mr: 2,
-                  ml: 2,
-                  display: { xs: "flex", md: "none" },
-                  flexGrow: 1,
-                  fontFamily: "monospace",
-                  fontWeight: 700,
-                  //   letterSpacing: ".3rem",
-                  color: "inherit",
-                  textDecoration: "none",
-                }}
-              >
-                {restorant?.name || "Logo"}
-              </Typography>
-              {/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box> */}
-              {/* <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: "center" }}>
-                    {setting}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
-            </Toolbar>
-            <Box
-              sx={{
-                borderBottom: 1,
-                borderColor: "divider",
-                // position: "sticky",
-                // top: 0,
-                // zIndex: 1,
-                backgroundColor: "white",
-              }}
-            >
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                //   aria-label="basic tabs example"\
-                variant="scrollable"
-                scrollButtons="auto"
-                aria-label="scrollable auto tabs example"
-              >
-                {dishesGroup.map((group) => (
-                  <Tab key={group.id} label={group.name} />
-                ))}
-              </Tabs>
-            </Box>
-          </Container>
-        </AppBar>
-      </ElevationScroll>
+            </Tabs>
+          </Box>
+        </Container>
+      </AppBar>
     </>
   );
 }

@@ -1,24 +1,24 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import { currencies, dishes, dishesGroup, restorants } from "../../mock";
-import { Box, Button, CardActions, IconButton } from "@mui/material";
+import { AppBar, Box, Button, CardActions, Tab, Tabs } from "@mui/material";
 import { Global } from "@emotion/react";
 import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { grey } from "@mui/material/colors";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import { formatThousands } from "../../utils";
 import { useParams } from "react-router-dom";
 import type { dishesT } from "../../types";
 // import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import Cart from "./views/Cart";
+import DeleteAddButtons from "./components/DeleteAddButtons";
 
 const drawerBleeding = 0;
 
@@ -52,20 +52,57 @@ const Puller = styled("div")(({ theme }) => ({
   backgroundColor: grey[300],
   borderRadius: 3,
   position: "absolute",
-  top: -14,
-
+  top: 10,
   left: "calc(50% - 15px)",
   ...theme.applyStyles("dark", {
     backgroundColor: grey[900],
   }),
 }));
 
+function TabPanel(props: any) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      // hidden={value !== index}
+      id={`scrollable-auto-tabpanel-${index}`}
+      aria-labelledby={`scrollable-auto-tab-${index}`}
+      {...other}
+    >
+      {/* {value === index && ( */}
+      <Box p={3}>{children}</Box>
+      {/* )} */}
+    </div>
+  );
+}
+
+// TabPanel.propTypes = {
+//   children: PropTypes.node,
+//   index: PropTypes.any.isRequired,
+//   value: PropTypes.any.isRequired,
+// };
+function a11yProps(index: any) {
+  return {
+    id: `scrollable-auto-tab-${index}`,
+    "aria-controls": `scrollable-auto-tabpanel-${index}`,
+  };
+}
 function RestaurantPage(props: Props) {
   //   const navigate = useNavigate();
   const [count, setCount] = React.useState<number>(1);
   const [sum, setSum] = React.useState<number>(0);
   const [dish, setDish] = React.useState<dishesT>();
-  // const [dishSelected, setDishSelected] = React.useState<dishesT>();
+  const [openCart, setOpenCart] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpenCart(true);
+  };
+
+  const handleClose = () => {
+    setOpenCart(false);
+  };
+  const [dishSelected, setDishSelected] = React.useState<dishesT[]>([]);
 
   const { id = "0" } = useParams<{ id: string }>();
   const restorant = restorants.find(
@@ -95,7 +132,10 @@ function RestaurantPage(props: Props) {
     //   });
     // }
     // setValue(newValue);
-    // setDishSelected()
+
+    const dishSelect: dishesT[] = [...dishSelected, value];
+    setDishSelected(dishSelect);
+
     setSum(sum + value.price);
   };
 
@@ -110,6 +150,11 @@ function RestaurantPage(props: Props) {
     },
     {}
   );
+  const [value, setValue] = useState(0);
+  // const groupRefs = useRef({});
+  const handleChangea = (event: any, newValue: any) => {
+    setValue(newValue);
+  };
 
   return (
     <Root>
@@ -137,9 +182,10 @@ function RestaurantPage(props: Props) {
           <SwiperSlide>Slide 4</SwiperSlide>
         </Swiper>
       </div> */}
+
       <div
         style={{
-          padding: "0 1rem 2rem",
+          padding: "1rem 1rem 2rem",
           gap: "1rem",
         }}
       >
@@ -149,9 +195,13 @@ function RestaurantPage(props: Props) {
             key={groupId}
             ref={(el) => ((groupRefs.current as any)[index] = el)}
           >
-            <h3 style={{ textAlign: "left" }}>
+            <Typography
+              sx={{ textAlign: "left", my: 2, flex: 1 }}
+              variant="h6"
+              // style={{ textAlign: "left" }}
+            >
               {dishesGroup.find((g) => String(g.id) === groupId)?.name}:
-            </h3>
+            </Typography>
             <div
               style={{
                 display: "grid",
@@ -213,6 +263,7 @@ function RestaurantPage(props: Props) {
           startIcon={<ShoppingCartIcon />}
           variant="contained"
           style={{ borderRadius: "1rem", position: "sticky", bottom: "1rem" }}
+          onClick={handleClickOpen}
         >
           {formatThousands(sum)}{" "}
           {restorant?.currency && currencies[restorant?.currency]}
@@ -227,7 +278,6 @@ function RestaurantPage(props: Props) {
           onOpen={toggleDrawer(true)}
           swipeAreaWidth={drawerBleeding}
           disableSwipeToOpen={false}
-          // style={{ borderRadius: "1rem" }}
           ModalProps={{
             keepMounted: true,
           }}
@@ -236,7 +286,7 @@ function RestaurantPage(props: Props) {
             sx={{
               // display: open ? "block" : "none",
               position: "absolute",
-              top: -drawerBleeding,
+              top: drawerBleeding,
               borderTopLeftRadius: 8,
               borderTopRightRadius: 8,
               visibility: "visible",
@@ -264,21 +314,7 @@ function RestaurantPage(props: Props) {
               </Typography>
             </Box>
             <div style={{ display: "flex", gap: "1rem", padding: "1rem" }}>
-              <div style={{ backgroundColor: "#eee", borderRadius: "0.5rem" }}>
-                <IconButton
-                  aria-label="Remove"
-                  onClick={() => setCount(count - 1)}
-                >
-                  <RemoveIcon />
-                </IconButton>
-                <span>{count}</span>
-                <IconButton
-                  aria-label="Add"
-                  onClick={() => setCount(count + 1)}
-                >
-                  <AddIcon />
-                </IconButton>
-              </div>
+              <DeleteAddButtons count={count} setCount={setCount} />
 
               <Button
                 variant="contained"
@@ -290,11 +326,9 @@ function RestaurantPage(props: Props) {
               </Button>
             </div>
           </StyledBox>
-          {/* <StyledBox sx={{ px: 2, pb: 2, height: "100%", overflow: "auto" }}>
-          <Skeleton variant="rectangular" height="100%" />
-        </StyledBox> */}
         </SwipeableDrawer>
       )}
+      <Cart open={openCart} onClose={handleClose} dishSelected={dishSelected} />
     </Root>
   );
 }

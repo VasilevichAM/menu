@@ -3,19 +3,19 @@ import { dishesT } from "./types";
 export const restorants = [
   {
     id: 1,
-    name: "Restorant 1",
+    name: "Oven",
     type: "Italian",
     city: "City 1",
     address: "Address 1",
     phone: "123456789",
     email: "email@email.com",
-    currency: "USD",
-    language: "en",
+    currency: "EUR",
+    language: "et",
     image:
       "https://optim.tildacdn.com/tild3233-3731-4365-b166-366333666635/-/resize/960x/-/format/webp/restaurant-projectio.jpg",
-    logo: "https://marketplace.canva.com/EAFaFUz4aKo/2/0/400w/canva-yellow-abstract-cooking-fire-free-logo-8iEUG5R0yQ4.jpg",
-    location: "44.812619, 20.424597",
-    range: 4.8,
+    // logo: "https://marketplace.canva.com/EAFaFUz4aKo/2/0/400w/canva-yellow-abstract-cooking-fire-free-logo-8iEUG5R0yQ4.jpg",
+    // location: "44.812619, 20.424597",
+    // range: 4.8,
   },
   {
     id: 2,
@@ -201,6 +201,7 @@ export const currencies: Record<string, string> = {
 export const languages = [
   { id: "en", name: "English" },
   { id: "ru", name: "Russian" },
+  { id: "et", name: "Estonskij" },
   { id: "sr", name: "Srbin" },
   { id: "kz", name: "Kazaksha" },
 ];
