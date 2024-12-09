@@ -8,9 +8,11 @@ import "./App.css";
 import { lazy, ReactNode, Suspense } from "react";
 import { CircularProgress } from "@mui/material";
 import Sidebar from "./components/Sidebar";
+import "./i18n";
 
-// const RestaurantsPage = lazy(() => import("./pages/RestaurantsPage"));
+const RestaurantsPage = lazy(() => import("./pages/RestaurantsPage"));
 const RestaurantPage = lazy(() => import("./pages/RestaurantPage"));
+const OrdersPage = lazy(() => import("./pages/OrdersPage"));
 
 const AppLayout = () => (
   <>
@@ -34,11 +36,12 @@ function App() {
       <Router>
         <Routes>
           <Route element={<AppLayout />}>
-            {/* <Route path="/" element={suspense(<RestaurantsPage />)} /> */}
+            <Route path="/" element={suspense(<RestaurantsPage />)} />
             <Route
               path="/restaurant/:id"
               element={suspense(<RestaurantPage />)}
             />
+            <Route path="/orders/:id" element={suspense(<OrdersPage />)} />
           </Route>
         </Routes>
       </Router>

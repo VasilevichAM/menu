@@ -1,4 +1,4 @@
-import { dishesT } from "./types";
+import { dishesT, ordersT } from "./types";
 
 export const restorants = [
   {
@@ -19,7 +19,7 @@ export const restorants = [
   },
   {
     id: 2,
-    name: "Restorant 2",
+    name: "Арарат",
     type: "Russian",
     city: "City 2",
     address: "Address 2",
@@ -68,6 +68,7 @@ export const dishes: dishesT[] = [
     image:
       "https://aif-s3.aif.ru/images/015/573/91c0d7c133aa580e0c368bb536b053a1.jpg",
     range: 5,
+
     compound:
       "compound, compound, compound, compound, compound, compound, compound, compound",
     groupId: 1,
@@ -175,6 +176,36 @@ export const dishes: dishesT[] = [
     range: 2,
     compound: "compound",
     groupId: 3,
+  },
+];
+
+export const orders: ordersT[] = [
+  {
+    table: "1",
+    userId: 666,
+    order: [
+      { id: 1, count: 2 },
+      { id: 3, count: 3 },
+    ],
+    total: 2200,
+    time: "12:00:00",
+  },
+  {
+    table: "3",
+    userId: 666,
+    order: [
+      { id: 2, count: 1 },
+      { id: 4, count: 1 },
+    ],
+    total: 200,
+    time: "12:30:00",
+  },
+  {
+    table: "5",
+    userId: 666,
+    order: [{ id: 1, count: 2 }],
+    total: 2000,
+    time: "13:00:00",
   },
 ];
 

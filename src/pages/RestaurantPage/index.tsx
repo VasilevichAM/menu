@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import { currencies, dishes, dishesGroup, restorants } from "../../mock";
-import { AppBar, Box, Button, CardActions, Tab, Tabs } from "@mui/material";
+import { Box, Button, CardActions, IconButton } from "@mui/material";
 import { Global } from "@emotion/react";
 import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,11 +14,13 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { formatThousands } from "../../utils";
 import { useParams } from "react-router-dom";
-import type { dishesT } from "../../types";
-// import { Swiper, SwiperSlide } from "swiper/react";
+import type { cartT, dishesT } from "../../types";
 import "swiper/css";
 import Cart from "./views/Cart";
 import DeleteAddButtons from "./components/DeleteAddButtons";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { useTranslation } from "react-i18next";
 
 const drawerBleeding = 0;
 
@@ -59,41 +61,57 @@ const Puller = styled("div")(({ theme }) => ({
   }),
 }));
 
-function TabPanel(props: any) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      // hidden={value !== index}
-      id={`scrollable-auto-tabpanel-${index}`}
-      aria-labelledby={`scrollable-auto-tab-${index}`}
-      {...other}
-    >
-      {/* {value === index && ( */}
-      <Box p={3}>{children}</Box>
-      {/* )} */}
-    </div>
-  );
-}
-
-// TabPanel.propTypes = {
-//   children: PropTypes.node,
-//   index: PropTypes.any.isRequired,
-//   value: PropTypes.any.isRequired,
-// };
-function a11yProps(index: any) {
-  return {
-    id: `scrollable-auto-tab-${index}`,
-    "aria-controls": `scrollable-auto-tabpanel-${index}`,
-  };
-}
 function RestaurantPage(props: Props) {
-  //   const navigate = useNavigate();
+  const { t } = useTranslation(["dish"]);
   const [count, setCount] = React.useState<number>(1);
-  const [sum, setSum] = React.useState<number>(0);
+  const [value, setValue] = useState(0);
   const [dish, setDish] = React.useState<dishesT>();
   const [openCart, setOpenCart] = React.useState(false);
+  const [cart, setCart] = useState<cartT[]>([]);
+
+  // Функция для добавления продукта
+  const addProduct = (product: dishesT) => {
+    setCart((prevCart) => {
+      const existingProduct = prevCart.find((item) => item.id === product.id);
+      if (existingProduct) {
+        // Увеличиваем количество, если продукт уже в корзине
+        return prevCart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity && item.quantity + 1 }
+            : item
+        );
+      }
+      // Добавляем новый продукт
+      return [...prevCart, { ...product, quantity: 1 }];
+    });
+  };
+
+  // Функция для уменьшения количества продукта
+  const removeProduct = (productId: number) => {
+    setCart((prevCart) => {
+      const existingProduct = prevCart.find((item) => item.id === productId);
+      if (existingProduct?.quantity === 1) {
+        // Удаляем продукт, если его количество 1
+        return prevCart.filter((item) => item.id !== productId);
+      }
+      // Уменьшаем количество продукта
+      return prevCart.map((item) =>
+        item.id === productId
+          ? { ...item, quantity: ((item.quantity && item.quantity) || 0) - 1 }
+          : item
+      );
+    });
+  };
+
+  // Функция для вычисления общей суммы
+  const calculateTotal = () => {
+    return cart
+      .reduce(
+        (total: number, item: cartT) => total + item.price * item.quantity,
+        0
+      )
+      .toFixed(2);
+  };
 
   const handleClickOpen = () => {
     setOpenCart(true);
@@ -102,7 +120,6 @@ function RestaurantPage(props: Props) {
   const handleClose = () => {
     setOpenCart(false);
   };
-  const [dishSelected, setDishSelected] = React.useState<dishesT[]>([]);
 
   const { id = "0" } = useParams<{ id: string }>();
   const restorant = restorants.find(
@@ -123,22 +140,6 @@ function RestaurantPage(props: Props) {
 
   const groupRefs = useRef({});
 
-  const handleChange = (value: dishesT) => {
-    // console.log(newValue, "newValue");
-    // document.location.href = `#${newValue}`; //// ????
-    // if (groupRefs.current && groupRefs.current[newValue]) {
-    //   (groupRefs?.current[newValue] as any).scrollIntoView({
-    //     behavior: "smooth",
-    //   });
-    // }
-    // setValue(newValue);
-
-    const dishSelect: dishesT[] = [...dishSelected, value];
-    setDishSelected(dishSelect);
-
-    setSum(sum + value.price);
-  };
-
   const groupedDishes = dishes.reduce(
     (acc: Record<string, dishesT[]>, dish) => {
       // Проверяем, существует ли группа в аккумуляторе
@@ -150,11 +151,6 @@ function RestaurantPage(props: Props) {
     },
     {}
   );
-  const [value, setValue] = useState(0);
-  // const groupRefs = useRef({});
-  const handleChangea = (event: any, newValue: any) => {
-    setValue(newValue);
-  };
 
   return (
     <Root>
@@ -183,6 +179,25 @@ function RestaurantPage(props: Props) {
         </Swiper>
       </div> */}
 
+      {/* <Box
+        sx={{
+          borderBottom: 1,
+          borderColor: "divider",
+          // backgroundColor: "white",
+        }}
+      >
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="auto"
+          aria-label="scrollable auto tabs example"
+        >
+          {dishesGroup.map((group) => (
+            <Tab key={group.id} label={group.name} />
+          ))}
+        </Tabs>
+      </Box> */}
       <div
         style={{
           padding: "1rem 1rem 2rem",
@@ -209,9 +224,13 @@ function RestaurantPage(props: Props) {
                 gap: "1rem",
               }}
             >
-              {groupedDishes[groupId].map((dish: dishesT) => (
+              {groupedDishes[groupId].map((dish: dishesT, index) => (
                 <Card
-                  style={{ borderRadius: "1rem", backgroundColor: "#f8f8f8" }}
+                  key={index}
+                  style={{
+                    borderRadius: "1rem",
+                    //  backgroundColor: "#f8f8f8"
+                  }}
                   elevation={0}
                 >
                   <CardActionArea onClick={toggleDrawer(dish)}>
@@ -235,22 +254,52 @@ function RestaurantPage(props: Props) {
                       </Typography>
                     </CardContent>
                   </CardActionArea>
-                  <CardActions>
-                    <Button
-                      variant="outlined"
-                      fullWidth
-                      // color=""
-                      size="small"
-                      style={{
-                        borderRadius: "1rem",
-                        width: "100%",
-                        backgroundColor: "white",
-                      }}
-                      onClick={() => handleChange(dish)}
-                    >
-                      {formatThousands(dish.price)}{" "}
-                      {restorant?.currency && currencies[restorant?.currency]}
-                    </Button>
+                  <CardActions
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    {cart.find((d) => d.id === dish.id)?.quantity ? (
+                      <>
+                        <IconButton
+                          aria-label="delete"
+                          size="small"
+                          onClick={() => removeProduct(dish.id)}
+                        >
+                          <RemoveIcon fontSize="small" />
+                        </IconButton>
+                        <div style={{ display: "grid" }}>
+                          <small>
+                            {cart.find((d) => d.id === dish.id)?.quantity}
+                          </small>
+                          {/* <small>
+                            {cart.find((d) => d.id === dish.id)?.quantity *
+                              cart.find((d) => d.id === dish.id)?.price}
+                          </small> */}
+                        </div>
+                        <IconButton
+                          aria-label="delete"
+                          size="small"
+                          onClick={() => addProduct(dish)}
+                        >
+                          <AddIcon fontSize="small" />
+                        </IconButton>
+                      </>
+                    ) : (
+                      <Button
+                        variant="outlined"
+                        fullWidth
+                        // color=""
+                        size="small"
+                        style={{
+                          borderRadius: "1rem",
+                          width: "100%",
+                          // backgroundColor: "white",
+                        }}
+                        onClick={() => addProduct(dish)}
+                      >
+                        {formatThousands(dish.price)}{" "}
+                        {restorant?.currency && currencies[restorant?.currency]}
+                      </Button>
+                    )}
                   </CardActions>
                 </Card>
               ))}
@@ -258,14 +307,16 @@ function RestaurantPage(props: Props) {
           </div>
         ))}
       </div>
-      {sum > 0 && (
+      {cart.length > 0 && (
         <Button
           startIcon={<ShoppingCartIcon />}
           variant="contained"
+          size="large"
+          disableElevation
           style={{ borderRadius: "1rem", position: "sticky", bottom: "1rem" }}
           onClick={handleClickOpen}
         >
-          {formatThousands(sum)}{" "}
+          {formatThousands(Number(calculateTotal()))}{" "}
           {restorant?.currency && currencies[restorant?.currency]}
         </Button>
       )}
@@ -284,7 +335,6 @@ function RestaurantPage(props: Props) {
         >
           <StyledBox
             sx={{
-              // display: open ? "block" : "none",
               position: "absolute",
               top: drawerBleeding,
               borderTopLeftRadius: 8,
@@ -305,30 +355,47 @@ function RestaurantPage(props: Props) {
               }}
             />
             <Box component="section" sx={{ p: 2 }}>
-              <Typography variant="h5">
+              <Typography sx={{ py: 1 }} variant="h5">
                 {dish.name}{" "}
                 <small style={{ color: "#999" }}>{dish.weight}г</small>
               </Typography>
+              <Typography sx={{ py: 1, color: "text.secondary" }}>
+                {t("description")}: {dish?.description}
+              </Typography>
               <Typography sx={{ color: "text.secondary" }}>
-                {dish?.compound}
+                {t("compound")}: {dish?.compound}
               </Typography>
             </Box>
             <div style={{ display: "flex", gap: "1rem", padding: "1rem" }}>
-              <DeleteAddButtons count={count} setCount={setCount} />
+              <DeleteAddButtons
+                count={cart.find((d) => d.id === dish.id)?.quantity || 1}
+                onAddProduct={() => addProduct(dish)}
+                onRremoveProduct={() => removeProduct(dish?.id)}
+              />
 
               <Button
                 variant="contained"
                 disableElevation
+                size="large"
                 sx={{ flexGrow: 1, borderRadius: "1rem" }}
               >
-                {formatThousands(dish?.price * count)}{" "}
+                {formatThousands(
+                  dish.price *
+                    (cart.find((d) => d.id === dish.id)?.quantity || 1)
+                )}{" "}
                 {restorant?.currency && currencies[restorant?.currency]}
               </Button>
             </div>
           </StyledBox>
         </SwipeableDrawer>
       )}
-      <Cart open={openCart} onClose={handleClose} dishSelected={dishSelected} />
+      <Cart
+        cart={cart}
+        open={openCart}
+        onClose={handleClose}
+        onAddProduct={addProduct}
+        onRremoveProduct={removeProduct}
+      />
     </Root>
   );
 }

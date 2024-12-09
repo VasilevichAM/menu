@@ -1,5 +1,4 @@
 import * as React from "react";
-// import Button from '@mui/material/Button';
 import Dialog from "@mui/material/Dialog";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -11,12 +10,14 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import { Avatar, ListItemAvatar } from "@mui/material";
+import { Avatar, Button, DialogActions, ListItemAvatar } from "@mui/material";
 import DeleteAddButtons from "../components/DeleteAddButtons";
-import type { dishesT } from "../../../types";
+import type { cartT } from "../../../types";
 import { formatThousands } from "../../../utils";
+import { useTranslation } from "react-i18next";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -28,10 +29,17 @@ const Transition = React.forwardRef(function Transition(
 });
 
 export default function Cart(params: any) {
-  const [count, setCount] = React.useState<number>(1);
-  const sumPrice = params.dishSelected.reduce((acc: number, dish: dishesT) => {
-    return acc + dish.price;
-  }, 0);
+  const { t } = useTranslation(["dish"]);
+
+  const calculateTotal = () => {
+    return params.cart
+      .reduce(
+        (total: number, item: cartT) => total + item.price * item.quantity,
+        0
+      )
+      .toFixed(2);
+  };
+
   return (
     <Dialog
       fullScreen
@@ -50,7 +58,7 @@ export default function Cart(params: any) {
             <ArrowBackIcon />
           </IconButton>
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-            Заказ
+            {t("order")}
           </Typography>
           <IconButton
             edge="start"
@@ -63,35 +71,77 @@ export default function Cart(params: any) {
         </Toolbar>
       </AppBar>
       <List>
-        {params.dishSelected.map((dish: any) => {
+        {params.cart.map((dish: any) => {
           return (
             <>
               <ListItemButton>
-                <ListItemAvatar>
-                  <Avatar alt={dish.name} src={dish.image} />
+                <ListItemAvatar sx={{ mr: 2 }}>
+                  <Avatar
+                    alt={dish.name}
+                    src={dish.image}
+                    variant="rounded"
+                    sx={{ width: 56, height: 56 }}
+                  />
                 </ListItemAvatar>
-                <ListItemText primary={dish.name} secondary={dish.price} />
-                <DeleteAddButtons count={count} setCount={setCount} />
+                <ListItemText primary={dish.name} secondary={dish.weight} />
               </ListItemButton>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  margin: "0 1rem 0 5rem",
+                }}
+              >
+                <DeleteAddButtons
+                  count={dish.quantity}
+                  onAddProduct={() => params.onAddProduct(dish)}
+                  onRremoveProduct={() => params.onRremoveProduct(dish.id)}
+                />
+                <Typography variant="h6">
+                  {formatThousands(dish.price * dish.quantity)}
+                </Typography>
+              </div>
               <Divider variant="inset" component="li" />
             </>
           );
         })}
       </List>
-      <Typography variant="h4" sx={{ margin: "1rem" }}>
-        {formatThousands(sumPrice)}
-      </Typography>
+      <Button
+        variant="outlined"
+        startIcon={<AddIcon />}
+        sx={{ borderRadius: "1rem", margin: "1rem" }}
+        onClick={params.onClose}
+      >
+        Добавить ещё что-нибудь
+      </Button>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Typography variant="h6" sx={{ margin: "1rem" }}>
+          {t("total")}
+        </Typography>
 
-      {/* <Typography variant="h6" sx={{ margin: "1rem" }}>
-        +?
-      </Typography>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "1rem",
+        <Typography variant="h6" sx={{ margin: "1rem" }}>
+          {formatThousands(calculateTotal())}
+        </Typography>
+      </div>
+
+      <DialogActions
+        sx={{
+          marginTop: "auto",
+          position: "sticky",
+          bottom: 16,
+          padding: "1rem",
         }}
-      >...</div> */}
+      >
+        <Button
+          variant="contained"
+          disableElevation
+          fullWidth
+          size="large"
+          onClick={() => console.log("ddd")}
+        >
+          {t("orderFood")}
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 }

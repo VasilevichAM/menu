@@ -1,30 +1,14 @@
-import * as React from "react";
+import React from "react";
 import AppBar from "@mui/material/AppBar";
-// import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-// import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-// import Menu from "@mui/material/Menu";
-// import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-// import Avatar from "@mui/material/Avatar";
-// import Button from "@mui/material/Button";
-// import Tooltip from "@mui/material/Tooltip";
-// import MenuItem from "@mui/material/MenuItem";
-// import AdbIcon from "@mui/icons-material/Adb";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useParams } from "react-router-dom";
-import { dishesGroup, restorants } from "../../mock";
-import {
-  // Avatar,
-  Box,
-  // Button,
-  Tab,
-  Tabs,
-  // useScrollTrigger,
-} from "@mui/material";
-
-// const pages = ["Products", "Pricing", "Blog"];
-// const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { restorants } from "../../mock";
+import { Checkbox, IconButton, useColorScheme } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 interface Props {
   /**
@@ -35,65 +19,15 @@ interface Props {
   children?: React.ReactElement<{ elevation?: number }>;
 }
 
-// function ElevationScroll(props: Props) {
-//   const { children, window } = props;
-//   // Note that you normally won't need to set the window ref as useScrollTrigger
-//   // will default to window.
-//   // This is only being set here because the demo is in an iframe.
-//   const trigger = useScrollTrigger({
-//     disableHysteresis: true,
-//     threshold: 0,
-//     target: window ? window() : undefined,
-//   });
-
-//   return children
-//     ? React.cloneElement(children, {
-//         elevation: trigger ? 4 : 0,
-//       })
-//     : null;
-// }
-
-function Sidebar(props: Props) {
+function Sidebar() {
   const { id = "0" } = useParams<{ id: string }>();
   const restorant = restorants.find(
     (restorant: { id: number }) => restorant.id === Number(id)
   );
-
-  // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-  //   null
-  // );
-  // const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-  //   null
-  // );
-
-  // const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-  //   setAnchorElNav(event.currentTarget);
-  // };
-  // const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-  //   setAnchorElUser(event.currentTarget);
-  // };
-
-  // const handleCloseNavMenu = () => {
-  //   setAnchorElNav(null);
-  // };
-
-  // const handleCloseUserMenu = () => {
-  //   setAnchorElUser(null);
-  // };
-  let language = window.navigator.language;
-  // let languageFistTwo = language.substr(0, 2); // To only keep the first 2 characters.
-  console.log(language, "languageFistTwo");
-  const [value, setValue] = React.useState(0);
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    console.log(newValue, "newValue");
-    document.location.href = `#${newValue}`; //// ????
-    // if (groupRefs.current && groupRefs.current[newValue]) {
-    //   (groupRefs?.current[newValue] as any).scrollIntoView({
-    //     behavior: "smooth",
-    //   });
-    // }
-    setValue(newValue);
-  };
+  const { mode, setMode } = useColorScheme();
+  if (!mode) {
+    return null;
+  }
 
   return (
     <>
@@ -102,11 +36,22 @@ function Sidebar(props: Props) {
           width: "100%",
           height: "16rem",
           backgroundImage: `url(${restorant?.image})`,
-          backgroundSize: "contain",
+          backgroundSize: "cover",
           position: "absolute",
           top: 0,
+          textAlign: "end",
         }}
-      />
+      >
+        <Checkbox
+          aria-label="Переключить светлую/темную тему"
+          sx={{ margin: "1rem" }}
+          icon={<LightModeIcon color="primary" />}
+          checkedIcon={<DarkModeIcon color="primary" />}
+          onChange={(e) =>
+            setMode(Boolean(e.currentTarget.checked) ? "dark" : "light")
+          }
+        />
+      </div>
       <AppBar
         position="sticky"
         color="inherit"
@@ -130,26 +75,15 @@ function Sidebar(props: Props) {
             >
               {restorant?.name || "Logo"}
             </Typography>
+            {id && (
+              <IconButton
+                aria-label="delete"
+                onClick={() => console.log("MoreVertIcon")}
+              >
+                <MoreVertIcon />
+              </IconButton>
+            )}
           </Toolbar>
-          <Box
-            sx={{
-              borderBottom: 1,
-              borderColor: "divider",
-              backgroundColor: "white",
-            }}
-          >
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              variant="scrollable"
-              scrollButtons="auto"              
-              aria-label="scrollable auto tabs example"
-            >
-              {dishesGroup.map((group) => (
-                <Tab key={group.id} label={group.name} />
-              ))}
-            </Tabs>
-          </Box>
         </Container>
       </AppBar>
     </>
