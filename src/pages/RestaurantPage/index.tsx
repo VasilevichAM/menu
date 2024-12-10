@@ -1,11 +1,7 @@
 import React, { useRef, useState } from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import CardActionArea from "@mui/material/CardActionArea";
 import { currencies, dishes, dishesGroup, restorants } from "../../mock";
-import { Box, Button, CardActions, IconButton } from "@mui/material";
+import { Box, Button, Checkbox } from "@mui/material";
 import { Global } from "@emotion/react";
 import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -18,9 +14,10 @@ import type { cartT, dishesT } from "../../types";
 import "swiper/css";
 import Cart from "./views/Cart";
 import DeleteAddButtons from "./components/DeleteAddButtons";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useTranslation } from "react-i18next";
+import DishCard from "./components/DishCard";
 
 const drawerBleeding = 0;
 
@@ -63,8 +60,8 @@ const Puller = styled("div")(({ theme }) => ({
 
 function RestaurantPage(props: Props) {
   const { t } = useTranslation(["dish"]);
-  const [count, setCount] = React.useState<number>(1);
-  const [value, setValue] = useState(0);
+  // const [count, setCount] = React.useState<number>(1);
+  // const [value, setValue] = useState(0);
   const [dish, setDish] = React.useState<dishesT>();
   const [openCart, setOpenCart] = React.useState(false);
   const [cart, setCart] = useState<cartT[]>([]);
@@ -101,6 +98,11 @@ function RestaurantPage(props: Props) {
           : item
       );
     });
+  };
+
+  // Функция для удаления заказа
+  const deleteCart = () => {
+    setCart([]);
   };
 
   // Функция для вычисления общей суммы
@@ -225,83 +227,14 @@ function RestaurantPage(props: Props) {
               }}
             >
               {groupedDishes[groupId].map((dish: dishesT, index) => (
-                <Card
+                <DishCard
                   key={index}
-                  style={{
-                    borderRadius: "1rem",
-                    //  backgroundColor: "#f8f8f8"
-                  }}
-                  elevation={0}
-                >
-                  <CardActionArea onClick={toggleDrawer(dish)}>
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      src={dish.image}
-                      alt="restorant"
-                    />
-                    <CardContent
-                      sx={{ textAlign: "left", padding: "0.5rem 0.5rem 0" }}
-                    >
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          color: "text.secondary",
-                        }}
-                      >
-                        {dish.name}{" "}
-                        <small style={{ color: "#999" }}>{dish.weight}г</small>
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                  <CardActions
-                    sx={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    {cart.find((d) => d.id === dish.id)?.quantity ? (
-                      <>
-                        <IconButton
-                          aria-label="delete"
-                          size="small"
-                          onClick={() => removeProduct(dish.id)}
-                        >
-                          <RemoveIcon fontSize="small" />
-                        </IconButton>
-                        <div style={{ display: "grid" }}>
-                          <small>
-                            {cart.find((d) => d.id === dish.id)?.quantity}
-                          </small>
-                          {/* <small>
-                            {cart.find((d) => d.id === dish.id)?.quantity *
-                              cart.find((d) => d.id === dish.id)?.price}
-                          </small> */}
-                        </div>
-                        <IconButton
-                          aria-label="delete"
-                          size="small"
-                          onClick={() => addProduct(dish)}
-                        >
-                          <AddIcon fontSize="small" />
-                        </IconButton>
-                      </>
-                    ) : (
-                      <Button
-                        variant="outlined"
-                        fullWidth
-                        // color=""
-                        size="small"
-                        style={{
-                          borderRadius: "1rem",
-                          width: "100%",
-                          // backgroundColor: "white",
-                        }}
-                        onClick={() => addProduct(dish)}
-                      >
-                        {formatThousands(dish.price)}{" "}
-                        {restorant?.currency && currencies[restorant?.currency]}
-                      </Button>
-                    )}
-                  </CardActions>
-                </Card>
+                  dish={dish}
+                  cart={cart}
+                  toggleDrawer={toggleDrawer}
+                  addProduct={addProduct}
+                  removeProduct={removeProduct}
+                />
               ))}
             </div>
           </div>
@@ -353,7 +286,31 @@ function RestaurantPage(props: Props) {
                 height: "20rem",
                 backgroundImage: `url(${dish?.image})`,
               }}
-            />
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  borderRadius: "50%",
+                  margin: "0.5rem",
+                  backgroundColor: "rgba(0, 0, 0, 0.3)",
+                }}
+              >
+                <Checkbox
+                  aria-label="FavoritDish"
+                  size="small"
+                  // sx={{ padding: "0.25rem" }}
+                  icon={<FavoriteBorderIcon sx={{ color: "#fff" }} />}
+                  checkedIcon={<FavoriteIcon sx={{ color: "#fff" }} />}
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    console.log("like");
+                  }}
+                />
+              </div>
+            </div>
             <Box component="section" sx={{ p: 2 }}>
               <Typography sx={{ py: 1 }} variant="h5">
                 {dish.name}{" "}
@@ -366,7 +323,14 @@ function RestaurantPage(props: Props) {
                 {t("compound")}: {dish?.compound}
               </Typography>
             </Box>
-            <div style={{ display: "flex", gap: "1rem", padding: "1rem" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: "1rem",
+                padding: "1rem",
+              }}
+            >
               <DeleteAddButtons
                 count={cart.find((d) => d.id === dish.id)?.quantity || 1}
                 onAddProduct={() => addProduct(dish)}
@@ -377,7 +341,7 @@ function RestaurantPage(props: Props) {
                 variant="contained"
                 disableElevation
                 size="large"
-                sx={{ flexGrow: 1, borderRadius: "1rem" }}
+                sx={{ flexGrow: 1 / 1.5, borderRadius: "1rem" }}
               >
                 {formatThousands(
                   dish.price *
@@ -395,6 +359,7 @@ function RestaurantPage(props: Props) {
         onClose={handleClose}
         onAddProduct={addProduct}
         onRremoveProduct={removeProduct}
+        onDeleteCart={deleteCart}
       />
     </Root>
   );

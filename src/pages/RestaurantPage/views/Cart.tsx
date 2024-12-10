@@ -11,9 +11,16 @@ import Typography from "@mui/material/Typography";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import { Avatar, Button, DialogActions, ListItemAvatar } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  DialogActions,
+  ListItemAvatar,
+  // TextField,
+} from "@mui/material";
 import DeleteAddButtons from "../components/DeleteAddButtons";
 import type { cartT } from "../../../types";
 import { formatThousands } from "../../../utils";
@@ -63,7 +70,10 @@ export default function Cart(params: any) {
           <IconButton
             edge="start"
             color="inherit"
-            onClick={params.onClose}
+            onClick={() => {
+              params.onDeleteCart();
+              params.onClose();
+            }}
             aria-label="close"
           >
             <DeleteIcon />
@@ -89,7 +99,7 @@ export default function Cart(params: any) {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  margin: "0 1rem 0 5rem",
+                  margin: "0 1rem 0 4rem",
                 }}
               >
                 <DeleteAddButtons
@@ -123,6 +133,26 @@ export default function Cart(params: any) {
           {formatThousands(calculateTotal())}
         </Typography>
       </div>
+      <div style={{ display: "flex", gap: "1rem", margin: "1rem" }}>
+        <Button
+          variant="outlined"
+          size="small"
+          fullWidth
+          sx={{ borderRadius: "1rem" }}
+          startIcon={<NotificationsNoneIcon />}
+        >
+          {t("waiter")}
+        </Button>
+        <Button
+          variant="outlined"
+          size="small"
+          fullWidth
+          sx={{ borderRadius: "1rem" }}
+          startIcon={<AddIcon fontSize="small" />}
+        >
+          {t("comments")}
+        </Button>
+      </div>
 
       <DialogActions
         sx={{
@@ -137,6 +167,7 @@ export default function Cart(params: any) {
           disableElevation
           fullWidth
           size="large"
+          sx={{ borderRadius: "1rem" }}
           onClick={() => console.log("ddd")}
         >
           {t("orderFood")}

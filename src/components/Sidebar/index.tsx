@@ -10,14 +10,14 @@ import { restorants } from "../../mock";
 import { Checkbox, IconButton, useColorScheme } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window?: () => Window;
-  children?: React.ReactElement<{ elevation?: number }>;
-}
+// interface Props {
+//   /**
+//    * Injected by the documentation to work in an iframe.
+//    * You won't need it on your project.
+//    */
+//   window?: () => Window;
+//   children?: React.ReactElement<{ elevation?: number }>;
+// }
 
 function Sidebar() {
   const { id = "0" } = useParams<{ id: string }>();
@@ -42,15 +42,25 @@ function Sidebar() {
           textAlign: "end",
         }}
       >
-        <Checkbox
-          aria-label="Переключить светлую/темную тему"
-          sx={{ margin: "1rem" }}
-          icon={<LightModeIcon color="primary" />}
-          checkedIcon={<DarkModeIcon color="primary" />}
-          onChange={(e) =>
-            setMode(Boolean(e.currentTarget.checked) ? "dark" : "light")
-          }
-        />
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            borderRadius: "50%",
+            backgroundColor: "rgba(0, 0, 0,0.3)",
+            margin: "1rem",
+          }}
+        >
+          <Checkbox
+            aria-label="Переключить светлую/темную тему"
+            icon={<DarkModeIcon sx={{ color: "#fff" }} />}
+            checkedIcon={<LightModeIcon sx={{ color: "#fff" }} />}
+            onChange={(e) =>
+              setMode(Boolean(e.currentTarget.checked) ? "dark" : "light")
+            }
+          />
+        </div>
       </div>
       <AppBar
         position="sticky"

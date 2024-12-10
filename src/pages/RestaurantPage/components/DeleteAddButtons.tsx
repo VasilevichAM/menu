@@ -4,10 +4,18 @@ import RemoveIcon from "@mui/icons-material/Remove";
 
 export default function DeleteAddButtons(params: any) {
   return (
-    <div style={{ borderRadius: "0.5rem" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        flexGrow: 1 / 3,
+        borderRadius: "0.5rem",
+      }}
+    >
       <IconButton
         aria-label="Remove"
-        // size="large"
+        size="small"
         onClick={(e) => {
           e.stopPropagation();
           e.preventDefault();
@@ -19,7 +27,7 @@ export default function DeleteAddButtons(params: any) {
       <span>{params.count}</span>
       <IconButton
         aria-label="Add"
-        // size="large"
+        size="small"
         onClick={(e) => {
           e.stopPropagation();
           e.preventDefault();

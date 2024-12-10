@@ -61,7 +61,7 @@ export const dishes: dishesT[] = [
   {
     id: 1,
     restorantId: 1,
-    name: "Dish 1",
+    name: "Dish",
     price: 100000,
     weight: 300,
     description: "Description 1",
@@ -76,7 +76,7 @@ export const dishes: dishesT[] = [
   {
     id: 2,
     restorantId: 1,
-    name: "Dish 2",
+    name: "Dish dish dish dish dish dish dish dish dish dish",
     price: 10,
     weight: 300,
     description: "Description 2",
@@ -89,7 +89,7 @@ export const dishes: dishesT[] = [
   {
     id: 3,
     restorantId: 1,
-    name: "Dish 3",
+    name: "Dish",
     price: 10,
     weight: 300,
     description: "Description 3",

@@ -9,6 +9,8 @@ export const resources = {
       description: "Описание",
       total: "Итого",
       orderFood: "Заказать",
+      comments: "Комментарии",
+      waiter: "Официант",
     },
   },
   en: {
@@ -18,6 +20,8 @@ export const resources = {
       description: "Description",
       total: "Total",
       orderFood: "Order",
+      comments: "Comments",
+      waiter: "Waiter",
     },
   },
   bs: {
@@ -27,6 +31,8 @@ export const resources = {
       description: "Опис",
       total: "Тотално",
       orderFood: "Наредити",
+      comments: "Коментари",
+      waiter: "Официант",
     },
   },
   et: {
@@ -36,6 +42,8 @@ export const resources = {
       description: "Kirjeldus",
       total: "Kogusumma",
       orderFood: "Tellimus",
+      comments: "Kommentaarid",
+      waiter: "Külastaja",
     },
   },
   ////////////////////////////////////

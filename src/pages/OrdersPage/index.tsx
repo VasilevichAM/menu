@@ -1,12 +1,16 @@
 import {
   Avatar,
+  Badge,
+  Checkbox,
   List,
-  ListItem,
+  // ListItem,
   ListItemAvatar,
   ListItemButton,
   ListItemText,
-  Typography,
+  // Typography,
 } from "@mui/material";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { orders } from "../../mock";
 import { formatThousands } from "../../utils";
 
@@ -18,15 +22,23 @@ export default function OrdersPage() {
           return (
             <ListItemButton>
               <ListItemAvatar>
-                <Avatar>{order.table}</Avatar>
+                <Badge color="primary" badgeContent={order.order.length}>
+                  <Avatar>{order.table}</Avatar>
+                </Badge>
               </ListItemAvatar>
               <ListItemText
-                primary={order.order.length}
+                primary={formatThousands(order.total) + "$"}
                 secondary={order.time}
               />
-              <Typography variant="h6">
+              {/* <Typography variant="h6">
                 {formatThousands(order.total)}
-              </Typography>
+              </Typography> */}
+              <Checkbox
+                aria-label="Переключить светлую/темную тему"
+                icon={<NotificationsNoneIcon />}
+                checkedIcon={<NotificationsActiveIcon />}
+                onChange={() => window.navigator.vibrate(200)}
+              />
             </ListItemButton>
           );
         })}
