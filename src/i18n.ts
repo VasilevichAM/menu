@@ -11,6 +11,8 @@ export const resources = {
       orderFood: "Заказать",
       comments: "Комментарии",
       waiter: "Официант",
+      rating: "Рейтинг",
+      averageBill: "Средний чек",
     },
   },
   en: {
@@ -22,6 +24,8 @@ export const resources = {
       orderFood: "Order",
       comments: "Comments",
       waiter: "Waiter",
+      rating: "Rating",
+      averageBill: "Average bill",
     },
   },
   bs: {
@@ -33,6 +37,8 @@ export const resources = {
       orderFood: "Наредити",
       comments: "Коментари",
       waiter: "Официант",
+      rating: "Hinnang",
+      averageBill: "Average bill",
     },
   },
   et: {
@@ -44,6 +50,8 @@ export const resources = {
       orderFood: "Tellimus",
       comments: "Kommentaarid",
       waiter: "Külastaja",
+      rating: "Hinnang",
+      averageBill: "Average bill",
     },
   },
   ////////////////////////////////////

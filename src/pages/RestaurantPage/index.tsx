@@ -1,12 +1,19 @@
 import React, { useRef, useState } from "react";
 import Typography from "@mui/material/Typography";
 import { currencies, dishes, dishesGroup, restorants } from "../../mock";
-import { Box, Button, Checkbox } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Fab,
+  IconButton,
+  Rating,
+  Slide,
+  Tab,
+  Tabs,
+} from "@mui/material";
 import { Global } from "@emotion/react";
-import { styled } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import { grey } from "@mui/material/colors";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+// import CssBaseline from "@mui/material/CssBaseline";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { formatThousands } from "../../utils";
 import { useParams } from "react-router-dom";
@@ -16,49 +23,56 @@ import Cart from "./views/Cart";
 import DeleteAddButtons from "./components/DeleteAddButtons";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+// import SwapVertIcon from "@mui/icons-material/SwapVert";
+// import FilterIcon from "@mui/icons-material/Tune";
 import { useTranslation } from "react-i18next";
 import DishCard from "./components/DishCard";
+import { Root } from "./styled";
+// import Swipeable from "./components/Swipeable";
+import AutoFixHighOutlinedIcon from "@mui/icons-material/AutoFixHighOutlined";
+import Swipeable from "../../components/Swipeable";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import RestorantInfo from "./views/RestorantInfo";
 
-const drawerBleeding = 0;
+const fabStyle = {
+  position: "fixed",
+  bottom: 16,
+  right: 16,
+};
 
-interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window?: () => Window;
-}
+const magicCart = [
+  {
+    id: 1,
+    restorantId: 1,
+    name: "Dish",
+    price: 100000,
+    weight: 300,
+    description: "Description 1",
+    image:
+      "https://aif-s3.aif.ru/images/015/573/91c0d7c133aa580e0c368bb536b053a1.jpg",
+    range: 5,
+    compound:
+      "compound, compound, compound, compound, compound, compound, compound, compound",
+    groupId: 1,
+    quantity: 1,
+  },
+  {
+    id: 4,
+    restorantId: 1,
+    name: "Dish 4",
+    price: 10,
+    weight: 300,
+    description: "Description 4",
+    image:
+      "https://regionorel.ru/upload/iblock/cf3/cf39bf0b1c38f0b6003dca5ad506fde4.jpeg",
+    range: 2,
+    compound: "compound",
+    groupId: 2,
+    quantity: 1,
+  },
+];
 
-const Root = styled("div")(({ theme }) => ({
-  height: "100%",
-  backgroundColor: "#fff",
-  ...theme.applyStyles("dark", {
-    backgroundColor: theme.palette.background.default,
-  }),
-}));
-
-const StyledBox = styled("div")(({ theme }) => ({
-  backgroundColor: "#fff",
-  borderRadius: "1rem 1rem 0 0",
-  ...theme.applyStyles("dark", {
-    backgroundColor: grey[800],
-  }),
-}));
-
-const Puller = styled("div")(({ theme }) => ({
-  width: 30,
-  height: 6,
-  backgroundColor: grey[300],
-  borderRadius: 3,
-  position: "absolute",
-  top: 10,
-  left: "calc(50% - 15px)",
-  ...theme.applyStyles("dark", {
-    backgroundColor: grey[900],
-  }),
-}));
-
-function RestaurantPage(props: Props) {
+function RestaurantPage() {
   const { t } = useTranslation(["dish"]);
   // const [count, setCount] = React.useState<number>(1);
   // const [value, setValue] = useState(0);
@@ -115,6 +129,34 @@ function RestaurantPage(props: Props) {
       .toFixed(2);
   };
 
+  const [favorites, setFavorites] = React.useState<number[]>([]);
+  console.log(favorites, "favorites");
+
+  const saveFavorites = (favorit: number) => {
+    // const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    if (favorites) {
+      if (Array.isArray(favorites) && favorites.includes(favorit)) {
+        const filteredFavorites = favorites.filter(
+          (favorite: number) => favorite !== favorit
+        );
+        console.log(JSON.stringify(filteredFavorites));
+        setFavorites(filteredFavorites);
+      } else {
+        console.log(JSON.stringify([...favorites, favorit]));
+        setFavorites([...favorites, favorit]);
+      }
+    } else {
+      console.log(JSON.stringify([favorit]));
+      setFavorites([favorit]);
+      // localStorage.setItem("favorites", JSON.stringify([favorit]))
+    }
+
+    console.log(favorites, favorit, JSON.stringify([...favorites, favorit]));
+
+    // localStorage.setItem("favorites", JSON.stringify(columnVisibility));
+    // setOpenCart(true);
+  };
+
   const handleClickOpen = () => {
     setOpenCart(true);
   };
@@ -128,7 +170,6 @@ function RestaurantPage(props: Props) {
     (restorant: { id: number }) => restorant.id === Number(id)
   );
 
-  const { window } = props;
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen: any) => () => {
@@ -136,9 +177,11 @@ function RestaurantPage(props: Props) {
     setOpen(Boolean(newOpen));
   };
 
-  // This is used only for the example
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const [openInfo, setOpenInfo] = React.useState(false);
+
+  const toggleDrawerInfo = (newOpen: any) => () => {
+    setOpenInfo(Boolean(newOpen));
+  };
 
   const groupRefs = useRef({});
 
@@ -153,10 +196,14 @@ function RestaurantPage(props: Props) {
     },
     {}
   );
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   return (
     <Root>
-      <CssBaseline />
       <Global
         styles={{
           ".MuiDrawer-root > .MuiPaper-root": {
@@ -166,26 +213,49 @@ function RestaurantPage(props: Props) {
           },
         }}
       />
-      {/* <div> // TODO: для слайдера с предложениями для клиентов, надо продумать
-        <Swiper
-          navigation
-          pagination={{ clickable: true }}
-          scrollbar={{ draggable: true }}
-          spaceBetween={50}
-          slidesPerView={1}
-        >
-          <SwiperSlide>Slide 1</SwiperSlide>
-          <SwiperSlide>Slide 2</SwiperSlide>
-          <SwiperSlide>Slide 3</SwiperSlide>
-          <SwiperSlide>Slide 4</SwiperSlide>
-        </Swiper>
-      </div> */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          margin: "0 1rem",
+        }}
+      >
+        <div>
+          <Typography variant="h6">{restorant?.rating}</Typography>
+          <div>
+            <Rating
+              name="half-rating-read"
+              defaultValue={restorant?.rating}
+              precision={0.1}
+              readOnly
+              size="small"
+            />
+            {/* <Typography component="legend">{t("rating")}</Typography> */}
+          </div>
+          {/* <div>
+            <Rating
+              name="half-rating-read"
+              defaultValue={3.5}
+              precision={0.5}
+              readOnly
+            />
+            <Typography component="legend">{t("averageBill")}</Typography>
+          </div> */}
+        </div>
+        <IconButton aria-label="info" onClick={toggleDrawerInfo(true)}>
+          <MoreVertIcon />
+        </IconButton>
+      </div>
 
-      {/* <Box
+      {/* Категории блюд */}
+      <Box
         sx={{
           borderBottom: 1,
           borderColor: "divider",
-          // backgroundColor: "white",
+          position: "sticky",
+          top: 56,
+          zIndex: 1,
+          backgroundColor: "inherit",
         }}
       >
         <Tabs
@@ -199,7 +269,9 @@ function RestaurantPage(props: Props) {
             <Tab key={group.id} label={group.name} />
           ))}
         </Tabs>
-      </Box> */}
+      </Box>
+
+      {/* Список блюд */}
       <div
         style={{
           padding: "1rem 1rem 2rem",
@@ -231,54 +303,53 @@ function RestaurantPage(props: Props) {
                   key={index}
                   dish={dish}
                   cart={cart}
+                  favorites={favorites}
                   toggleDrawer={toggleDrawer}
                   addProduct={addProduct}
                   removeProduct={removeProduct}
+                  saveFavorites={saveFavorites}
                 />
               ))}
             </div>
           </div>
         ))}
       </div>
-      {cart.length > 0 && (
+
+      {/* Рекомендации */}
+      <Fab
+        sx={fabStyle}
+        color="primary"
+        onClick={() => {
+          setCart(magicCart);
+          handleClickOpen();
+        }}
+      >
+        <AutoFixHighOutlinedIcon />
+      </Fab>
+
+      {/* Карзина */}
+      <Slide direction="up" in={cart.length > 0} mountOnEnter unmountOnExit>
         <Button
           startIcon={<ShoppingCartIcon />}
           variant="contained"
           size="large"
           disableElevation
-          style={{ borderRadius: "1rem", position: "sticky", bottom: "1rem" }}
+          style={{ position: "sticky", bottom: "1rem" }}
           onClick={handleClickOpen}
         >
           {formatThousands(Number(calculateTotal()))}{" "}
           {restorant?.currency && currencies[restorant?.currency]}
         </Button>
-      )}
+      </Slide>
+
+      {/* Информация о блюде */}
       {dish && (
-        <SwipeableDrawer
-          container={container}
-          anchor="bottom"
+        <Swipeable
           open={open}
           onClose={toggleDrawer(false)}
           onOpen={toggleDrawer(true)}
-          swipeAreaWidth={drawerBleeding}
-          disableSwipeToOpen={false}
-          ModalProps={{
-            keepMounted: true,
-          }}
         >
-          <StyledBox
-            sx={{
-              position: "absolute",
-              top: drawerBleeding,
-              borderTopLeftRadius: 8,
-              borderTopRightRadius: 8,
-              visibility: "visible",
-              right: 0,
-              left: 0,
-              borderRadius: "1rem",
-            }}
-          >
-            <Puller />
+          <div>
             <div
               style={{
                 width: "100%",
@@ -300,13 +371,16 @@ function RestaurantPage(props: Props) {
                 <Checkbox
                   aria-label="FavoritDish"
                   size="small"
+                  checked={
+                    Array.isArray(favorites) && favorites.includes(dish.id)
+                  }
                   // sx={{ padding: "0.25rem" }}
                   icon={<FavoriteBorderIcon sx={{ color: "#fff" }} />}
                   checkedIcon={<FavoriteIcon sx={{ color: "#fff" }} />}
                   onChange={(e) => {
                     e.stopPropagation();
-                    e.preventDefault();
-                    console.log("like");
+                    // e.preventDefault();
+                    saveFavorites(dish.id);
                   }}
                 />
               </div>
@@ -350,9 +424,22 @@ function RestaurantPage(props: Props) {
                 {restorant?.currency && currencies[restorant?.currency]}
               </Button>
             </div>
-          </StyledBox>
-        </SwipeableDrawer>
+          </div>
+        </Swipeable>
       )}
+
+      {/* О ресторане */}
+      {restorant && (
+        <Swipeable
+          open={openInfo}
+          onClose={toggleDrawerInfo(false)}
+          onOpen={toggleDrawerInfo(true)}
+        >
+          <RestorantInfo {...restorant} />
+        </Swipeable>
+      )}
+
+      {/* Корзина */}
       <Cart
         cart={cart}
         open={openCart}
@@ -360,6 +447,7 @@ function RestaurantPage(props: Props) {
         onAddProduct={addProduct}
         onRremoveProduct={removeProduct}
         onDeleteCart={deleteCart}
+        onDish={toggleDrawer(true)}
       />
     </Root>
   );

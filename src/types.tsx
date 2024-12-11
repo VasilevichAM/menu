@@ -16,7 +16,7 @@ export type cartT = dishesT & {
 };
 
 export type restorantsT = {
-  id: 1;
+  id: number;
   name: string;
   type: string;
   city: string;
@@ -28,7 +28,9 @@ export type restorantsT = {
   image: string;
   logo?: string;
   location?: string;
-  range?: 4.8;
+  rating?: number;
+  dishesGroup?: { id: number; name: string }[];
+  info?: string;
 };
 
 export type ordersT = {

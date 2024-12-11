@@ -1,4 +1,3 @@
-import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -7,17 +6,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useParams } from "react-router-dom";
 import { restorants } from "../../mock";
-import { Checkbox, IconButton, useColorScheme } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-
-// interface Props {
-//   /**
-//    * Injected by the documentation to work in an iframe.
-//    * You won't need it on your project.
-//    */
-//   window?: () => Window;
-//   children?: React.ReactElement<{ elevation?: number }>;
-// }
+import { Checkbox, useColorScheme } from "@mui/material";
 
 function Sidebar() {
   const { id = "0" } = useParams<{ id: string }>();
@@ -85,14 +74,6 @@ function Sidebar() {
             >
               {restorant?.name || "Logo"}
             </Typography>
-            {id && (
-              <IconButton
-                aria-label="delete"
-                onClick={() => console.log("MoreVertIcon")}
-              >
-                <MoreVertIcon />
-              </IconButton>
-            )}
           </Toolbar>
         </Container>
       </AppBar>

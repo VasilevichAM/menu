@@ -9,6 +9,9 @@ const theme = createTheme({
   colorSchemes: {
     dark: true,
   },
+  shape: {
+    borderRadius: 20,    // defaults to 4
+  },
   palette: {
     primary: {
       light: "#757ce8",

@@ -15,7 +15,16 @@ export const restorants = [
       "https://optim.tildacdn.com/tild3233-3731-4365-b166-366333666635/-/resize/960x/-/format/webp/restaurant-projectio.jpg",
     // logo: "https://marketplace.canva.com/EAFaFUz4aKo/2/0/400w/canva-yellow-abstract-cooking-fire-free-logo-8iEUG5R0yQ4.jpg",
     // location: "44.812619, 20.424597",
-    // range: 4.8,
+    rating: 4.8,
+    dishesGroup: [
+      { id: 1, name: "Group 1" },
+      { id: 2, name: "Group 2" },
+      { id: 3, name: "Group 3" },
+      { id: 4, name: "Group 4" },
+      { id: 5, name: "Group 5" },
+      { id: 6, name: "Group 6" },
+    ],
+    info: "Исполнитель (продавец): ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСВЕННОСТЬЮ МУЛЬТИКУХНЯ, 123123123, 123213123, Москва, ул Авиаконструктора, д12, ИНН 777456345634, рег номер 12344241234434",
   },
   {
     id: 2,
@@ -31,7 +40,15 @@ export const restorants = [
       "https://static.tildacdn.com/tild3661-3133-4863-a265-383965306461/IMG_6103.jpg",
     logo: "https://marketplace.canva.com/EAFaFUz4aKo/2/0/400w/canva-yellow-abstract-cooking-fire-free-logo-8iEUG5R0yQ4.jpg",
     location: "41.812619, 21.424597",
-    range: 4.4,
+    rating: 4.4,
+    dishesGroup: [
+      { id: 1, name: "Group 0" },
+      { id: 2, name: "Group 12" },
+      { id: 3, name: "Group 32" },
+      { id: 4, name: "Group 43" },
+      { id: 5, name: "Group 45" },
+      { id: 6, name: "Group 65" },
+    ],
   },
 ];
 

@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import { lazy, ReactNode, Suspense } from "react";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, CssBaseline } from "@mui/material";
 import Sidebar from "./components/Sidebar";
 import "./i18n";
 
@@ -33,6 +33,7 @@ export function suspense(children: ReactNode) {
 function App() {
   return (
     <div className="App">
+      <CssBaseline />
       <Router>
         <Routes>
           <Route element={<AppLayout />}>

@@ -10,13 +10,14 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import React from "react";
 
 export default function DishCard(params: any) {
   const { dish } = params;
+
   return (
     <Card
       style={{
-        borderRadius: "1rem",
         position: "relative",
       }}
       variant="outlined"
@@ -32,17 +33,8 @@ export default function DishCard(params: any) {
           src={dish.image}
           alt="restorant"
         />
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            borderRadius: "50%",
-            margin: "0.5rem",
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
-          }}
-        >
-          <Checkbox
+
+        {/* <Checkbox
             aria-label="FavoritDish"
             size="small"
             sx={{ padding: "0.25rem" }}
@@ -55,10 +47,15 @@ export default function DishCard(params: any) {
             onChange={(e) => {
               e.stopPropagation();
               e.preventDefault();
+              if (e.target.checked) {
+                saveFavorites(dish.id);
+              } else {
+                removeFavorites(dish.id);
+              }
               console.log("like");
             }}
-          />
-        </div>
+          /> */}
+        {/* </div> */}
         <CardContent
           sx={{
             display: "flex",
@@ -119,10 +116,6 @@ export default function DishCard(params: any) {
             fullWidth
             // color=""
             size="small"
-            style={{
-              borderRadius: "1rem",
-              width: "100%",
-            }}
             onClick={() => params.addProduct(dish)}
           >
             {formatThousands(dish.price)}{" "}
@@ -130,6 +123,41 @@ export default function DishCard(params: any) {
           </Button>
         )}
       </CardActions>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          borderRadius: "50%",
+          margin: "0.5rem",
+          backgroundColor: "rgba(0, 0, 0, 0.3)",
+        }}
+      >
+        <Checkbox
+          aria-label="FavoritDish"
+          // value={
+          //   Array.isArray(params.favorites) &&
+          //   params.favorites.includes(dish.id)
+          // }
+          checked={
+            Array.isArray(params.favorites) &&
+            params.favorites.includes(dish.id)
+          }
+          size="small"
+          sx={{ padding: "0.25rem" }}
+          icon={
+            <FavoriteBorderIcon sx={{ color: "#fff", padding: "0.1rem" }} />
+          }
+          checkedIcon={
+            <FavoriteIcon sx={{ color: "#fff", padding: "0.1rem" }} />
+          }
+          onChange={(e) => {
+            e.stopPropagation();
+            // e.preventDefault();
+            params.saveFavorites(dish.id);
+          }}
+        />
+      </div>
     </Card>
   );
 }

@@ -19,7 +19,7 @@ function RestaurantsPage() {
   return (
     <div style={{ padding: "1rem", display: "grid", gap: "1rem" }}>
       {restorants.map((restorant) => (
-        <Card style={{ borderRadius: "1rem" }}>
+        <Card>
           <CardActionArea
             onClick={() => navigate("/restaurant/" + restorant.id)}
           >
@@ -56,7 +56,7 @@ function RestaurantsPage() {
                 {restorant.name}
                 <div>
                   <StarIcon fontSize="small" />
-                  {restorant.range}
+                  {restorant.rating}
                 </div>
               </Typography>
               <Typography variant="body2" sx={{ color: "text.secondary" }}>

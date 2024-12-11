@@ -9,7 +9,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from "@mui/icons-material/DeleteOutline";
 import AddIcon from "@mui/icons-material/Add";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import Slide from "@mui/material/Slide";
@@ -17,6 +17,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import {
   Avatar,
   Button,
+  Collapse,
   DialogActions,
   ListItemAvatar,
   // TextField,
@@ -25,6 +26,8 @@ import DeleteAddButtons from "../components/DeleteAddButtons";
 import type { cartT } from "../../../types";
 import { formatThousands } from "../../../utils";
 import { useTranslation } from "react-i18next";
+// import { TransitionGroup } from "react-transition-group";
+import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -46,6 +49,8 @@ export default function Cart(params: any) {
       )
       .toFixed(2);
   };
+
+  React.useEffect(() => {if(params.cart.length  === 0) params.onClose()},[params.cart])
 
   return (
     <Dialog
@@ -81,10 +86,11 @@ export default function Cart(params: any) {
         </Toolbar>
       </AppBar>
       <List>
+      {/* <TransitionGroup> */}
         {params.cart.map((dish: any) => {
           return (
-            <>
-              <ListItemButton>
+            <Collapse key={dish} in={true}>
+              <ListItemButton onClick={() => params.onDish()}>
                 <ListItemAvatar sx={{ mr: 2 }}>
                   <Avatar
                     alt={dish.name}
@@ -112,14 +118,15 @@ export default function Cart(params: any) {
                 </Typography>
               </div>
               <Divider variant="inset" component="li" />
-            </>
+            </Collapse>
           );
         })}
+        {/* </TransitionGroup> */}
       </List>
       <Button
         variant="outlined"
         startIcon={<AddIcon />}
-        sx={{ borderRadius: "1rem", margin: "1rem" }}
+        sx={{ margin: "1rem" }}
         onClick={params.onClose}
       >
         Добавить ещё что-нибудь
@@ -138,7 +145,6 @@ export default function Cart(params: any) {
           variant="outlined"
           size="small"
           fullWidth
-          sx={{ borderRadius: "1rem" }}
           startIcon={<NotificationsNoneIcon />}
         >
           {t("waiter")}
@@ -147,7 +153,6 @@ export default function Cart(params: any) {
           variant="outlined"
           size="small"
           fullWidth
-          sx={{ borderRadius: "1rem" }}
           startIcon={<AddIcon fontSize="small" />}
         >
           {t("comments")}
@@ -167,7 +172,6 @@ export default function Cart(params: any) {
           disableElevation
           fullWidth
           size="large"
-          sx={{ borderRadius: "1rem" }}
           onClick={() => console.log("ddd")}
         >
           {t("orderFood")}
