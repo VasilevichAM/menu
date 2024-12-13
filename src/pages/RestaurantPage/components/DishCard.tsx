@@ -10,14 +10,13 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import React from "react";
 
 export default function DishCard(params: any) {
   const { dish } = params;
 
   return (
     <Card
-      style={{
+      sx={{
         position: "relative",
       }}
       variant="outlined"
@@ -34,46 +33,26 @@ export default function DishCard(params: any) {
           alt="restorant"
         />
 
-        {/* <Checkbox
-            aria-label="FavoritDish"
-            size="small"
-            sx={{ padding: "0.25rem" }}
-            icon={
-              <FavoriteBorderIcon sx={{ color: "#fff", padding: "0.1rem" }} />
-            }
-            checkedIcon={
-              <FavoriteIcon sx={{ color: "#fff", padding: "0.1rem" }} />
-            }
-            onChange={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              if (e.target.checked) {
-                saveFavorites(dish.id);
-              } else {
-                removeFavorites(dish.id);
-              }
-              console.log("like");
-            }}
-          /> */}
-        {/* </div> */}
         <CardContent
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
             textAlign: "left",
             padding: "0.5rem 0.5rem 0",
           }}
         >
-          <Typography
-            variant="body2"
-            className="dish-name"
-            sx={{
-              color: "text.secondary",
-            }}
-          >
-            {dish.name}{" "}
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography
+              variant="body2"
+              className="dish-name"
+              sx={{
+                color: "text.secondary",
+              }}
+            >
+              {dish.name}
+            </Typography>
+          </div>
+          <Typography variant="caption" sx={{ color: "text.secondary" }}>
+            {dish.description}
           </Typography>
-          <span style={{ color: "#999" }}>{dish.weight}г</span>
         </CardContent>
       </CardActionArea>
       <CardActions
@@ -135,10 +114,6 @@ export default function DishCard(params: any) {
       >
         <Checkbox
           aria-label="FavoritDish"
-          // value={
-          //   Array.isArray(params.favorites) &&
-          //   params.favorites.includes(dish.id)
-          // }
           checked={
             Array.isArray(params.favorites) &&
             params.favorites.includes(dish.id)
@@ -153,7 +128,6 @@ export default function DishCard(params: any) {
           }
           onChange={(e) => {
             e.stopPropagation();
-            // e.preventDefault();
             params.saveFavorites(dish.id);
           }}
         />

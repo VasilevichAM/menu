@@ -30,9 +30,6 @@ export default function OrdersPage() {
                 primary={formatThousands(order.total) + "$"}
                 secondary={order.time}
               />
-              {/* <Typography variant="h6">
-                {formatThousands(order.total)}
-              </Typography> */}
               <Checkbox
                 aria-label="Переключить светлую/темную тему"
                 icon={<NotificationsNoneIcon />}

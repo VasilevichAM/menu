@@ -63,10 +63,9 @@ function Sidebar() {
               variant="h4"
               noWrap
               sx={{
-                paddingLeft: "1rem",
+                padding: "1rem",
                 display: { xs: "flex", md: "none" },
                 flexGrow: 1,
-                fontFamily: "monospace",
                 fontWeight: 700,
                 color: "inherit",
                 textDecoration: "none",

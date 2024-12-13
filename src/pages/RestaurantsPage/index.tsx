@@ -46,7 +46,7 @@ function RestaurantsPage() {
                 console.log("111");
               }}
             />
-            <CardContent>
+            {/* <CardContent>
               <Typography
                 gutterBottom
                 variant="h6"
@@ -56,13 +56,13 @@ function RestaurantsPage() {
                 {restorant.name}
                 <div>
                   <StarIcon fontSize="small" />
-                  {restorant.rating}
+                  {restorant.rating || 0}
                 </div>
               </Typography>
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
                 {restorant.type}
               </Typography>
-            </CardContent>
+            </CardContent> */}
           </CardActionArea>
         </Card>
       ))}

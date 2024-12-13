@@ -1,14 +1,13 @@
 export type dishesT = {
   id: number;
-  restorantId: number;
   name: string;
   price: number;
-  weight: number;
+  weight?: number;
   description: string;
   image: string;
-  range: number;
+  range?: number;
   compound: string;
-  groupId: number;
+  groupId: number[];
   quantity?: number;
 };
 export type cartT = dishesT & {
@@ -19,10 +18,10 @@ export type restorantsT = {
   id: number;
   name: string;
   type: string;
-  city: string;
-  address: string;
-  phone: string;
-  email: string;
+  city?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
   currency: string;
   language: string;
   image: string;
@@ -30,6 +29,7 @@ export type restorantsT = {
   location?: string;
   rating?: number;
   dishesGroup?: { id: number; name: string }[];
+  dishes: dishesT[];
   info?: string;
 };
 

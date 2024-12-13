@@ -11,7 +11,6 @@ import Typography from "@mui/material/Typography";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
 import AddIcon from "@mui/icons-material/Add";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import {
@@ -26,8 +25,6 @@ import DeleteAddButtons from "../components/DeleteAddButtons";
 import type { cartT } from "../../../types";
 import { formatThousands } from "../../../utils";
 import { useTranslation } from "react-i18next";
-// import { TransitionGroup } from "react-transition-group";
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -50,7 +47,9 @@ export default function Cart(params: any) {
       .toFixed(2);
   };
 
-  React.useEffect(() => {if(params.cart.length  === 0) params.onClose()},[params.cart])
+  React.useEffect(() => {
+    if (params.cart.length === 0) params.onClose();
+  }, [params.cart]);
 
   return (
     <Dialog
@@ -86,7 +85,7 @@ export default function Cart(params: any) {
         </Toolbar>
       </AppBar>
       <List>
-      {/* <TransitionGroup> */}
+        {/* <TransitionGroup> */}
         {params.cart.map((dish: any) => {
           return (
             <Collapse key={dish} in={true}>
@@ -99,7 +98,10 @@ export default function Cart(params: any) {
                     sx={{ width: 56, height: 56 }}
                   />
                 </ListItemAvatar>
-                <ListItemText primary={dish.name} secondary={dish.weight} />
+                <ListItemText
+                  primary={dish.name}
+                  secondary={dish.description}
+                />
               </ListItemButton>
               <div
                 style={{
@@ -140,7 +142,7 @@ export default function Cart(params: any) {
           {formatThousands(calculateTotal())}
         </Typography>
       </div>
-      <div style={{ display: "flex", gap: "1rem", margin: "1rem" }}>
+      {/* <div style={{ display: "flex", gap: "1rem", margin: "1rem" }}>
         <Button
           variant="outlined"
           size="small"
@@ -157,7 +159,7 @@ export default function Cart(params: any) {
         >
           {t("comments")}
         </Button>
-      </div>
+      </div> */}
 
       <DialogActions
         sx={{
