@@ -55,18 +55,14 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const random1 = Math.ceil(Math.random() * 39);
+const random2 = Math.ceil(Math.random() * 39);
+const random3 = Math.ceil(Math.random() * 39);
+
 const magicCart: cartT[] = [
-  {
-    id: 1004,
-    name: "Omlett",
-    price: 6,
-    description: "Singi ja juustuga",
-    image:
-      "https://thierry.by/assets/images/products/101/large/2310-omlet-s-vetchinoi-i-syrom.jpg",
-    quantity: 1,
-    compound: "",
-    groupId: [1],
-  },
+  { ...restorants[0].dishes[random1], quantity: 1 },
+  { ...restorants[0].dishes[random2], quantity: 1 },
+  { ...restorants[0].dishes[random3], quantity: 1 },
 ];
 
 function RestaurantPage() {
@@ -183,7 +179,7 @@ function RestaurantPage() {
       <Global
         styles={{
           ".MuiDrawer-root > .MuiPaper-root": {
-            height: `calc(95%)`,
+            height: `max-content`,
             overflow: "visible",
             borderRadius: "1rem 1rem 0 0",
           },

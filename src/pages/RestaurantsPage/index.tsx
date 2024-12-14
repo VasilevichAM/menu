@@ -1,15 +1,11 @@
-import * as React from "react";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import { useNavigate } from "react-router-dom";
 import { restorants } from "../../mock";
 import { Checkbox } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import StarIcon from "@mui/icons-material/Star";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 

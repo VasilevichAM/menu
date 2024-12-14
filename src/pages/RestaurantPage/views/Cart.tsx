@@ -25,6 +25,7 @@ import DeleteAddButtons from "../components/DeleteAddButtons";
 import type { cartT } from "../../../types";
 import { formatThousands } from "../../../utils";
 import { useTranslation } from "react-i18next";
+import { currencies, restorants } from "../../../mock";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -116,7 +117,9 @@ export default function Cart(params: any) {
                   onRremoveProduct={() => params.onRremoveProduct(dish.id)}
                 />
                 <Typography variant="h6">
-                  {formatThousands(dish.price * dish.quantity)}
+                  {formatThousands(dish.price * dish.quantity)}{" "}
+                  {restorants[0].currency &&
+                    currencies[restorants[0]?.currency]}
                 </Typography>
               </div>
               <Divider variant="inset" component="li" />
@@ -139,7 +142,8 @@ export default function Cart(params: any) {
         </Typography>
 
         <Typography variant="h6" sx={{ margin: "1rem" }}>
-          {formatThousands(calculateTotal())}
+          {formatThousands(calculateTotal())}{" "}
+          {restorants[0].currency && currencies[restorants[0]?.currency]}
         </Typography>
       </div>
       {/* <div style={{ display: "flex", gap: "1rem", margin: "1rem" }}>

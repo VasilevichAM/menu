@@ -39,6 +39,7 @@ export default function Swipeable(props: Props & any) {
           right: 0,
           left: 0,
           borderRadius: "1rem",
+          display: "contents",
         }}
       >
         <Puller />

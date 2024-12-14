@@ -4,6 +4,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteAddButtons from "../components/DeleteAddButtons";
 import { useTranslation } from "react-i18next";
 import { formatThousands } from "../../../utils";
+import { currencies, restorants } from "../../../mock";
 
 export default function DishInfo(params: any) {
   const { dish, cart, favorites, addProduct, removeProduct } = params;
@@ -17,6 +18,7 @@ export default function DishInfo(params: any) {
           borderRadius: "1rem 1rem 0 0",
           height: "20rem",
           backgroundImage: `url(${dish?.image})`,
+          backgroundSize: "cover",
         }}
       >
         <div
@@ -82,6 +84,7 @@ export default function DishInfo(params: any) {
               (cart.find((d: { id: number }) => d.id === dish.id)?.quantity ||
                 1)
           )}{" "}
+          {restorants[0].currency && currencies[restorants[0]?.currency]}
         </Button>
       </div>
     </div>

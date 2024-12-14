@@ -565,6 +565,7 @@ export const group_dishes = [
 
 export const currencies: Record<string, string> = {
   USD: "$",
+  EUR: "€",
   RUB: "₽",
   RSD: "din",
   KZT: "₸",
