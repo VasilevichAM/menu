@@ -34,9 +34,11 @@ import { Autoplay } from "swiper/modules";
 import Sidebar from "./components/Sidebar";
 import Favorite from "./views/Favorite";
 import Search from "./views/Search";
+import RestorantInfo from "./views/RestorantInfo";
 
 const fabStyle = {
   position: "fixed",
+  boxShadow: "none",
   bottom: 16,
   right: 16,
 };
@@ -58,37 +60,42 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const random1 = Math.ceil(Math.random() * 39);
-const random2 = Math.ceil(Math.random() * 39);
-const random3 = Math.ceil(Math.random() * 39);
-
-const magicCart: cartT[] = [
-  { ...restorants[0].dishes[random1], quantity: 1 },
-  { ...restorants[0].dishes[random2], quantity: 1 },
-  { ...restorants[0].dishes[random3], quantity: 1 },
-];
-
 function RestaurantPage() {
   const [dish, setDish] = React.useState<dishesT>();
   const [openCart, setOpenCart] = React.useState(false);
   const [openFavorite, setOpenFavorite] = React.useState(false);
   const [openSearch, setOpenSearch] = React.useState(false);
   const [cart, setCart] = useState<cartT[]>([]);
+  const [openInfo, setOpenInfo] = React.useState(false);
+
+  const toggleDrawerInfo = (newOpen: boolean) => () => {
+    setOpenInfo(Boolean(newOpen));
+  };
+
+  const random1 = Math.ceil(Math.random() * 39);
+  const random2 = Math.ceil(Math.random() * 39);
+  const random3 = Math.ceil(Math.random() * 39);
+
+  const magicCart: cartT[] = [
+    { ...restorants[0].dishes[random1], quantity: 1 },
+    { ...restorants[0].dishes[random2], quantity: 1 },
+    { ...restorants[0].dishes[random3], quantity: 1 },
+  ];
 
   // Функция для добавления продукта
-  const addProduct = (product: dishesT) => {
+  const addProduct = (product: dishesT, count = 1) => {
     setCart((prevCart) => {
       const existingProduct = prevCart.find((item) => item.id === product.id);
       if (existingProduct) {
         // Увеличиваем количество, если продукт уже в корзине
         return prevCart.map((item) =>
           item.id === product.id
-            ? { ...item, quantity: item.quantity && item.quantity + 1 }
+            ? { ...item, quantity: item.quantity && item.quantity + count }
             : item
         );
       }
       // Добавляем новый продукт
-      return [...prevCart, { ...product, quantity: 1 }];
+      return [...prevCart, { ...product, quantity: count }];
     });
   };
 
@@ -184,6 +191,7 @@ function RestaurantPage() {
       <Sidebar
         setOpenFavorite={setOpenFavorite}
         setOpenSearch={setOpenSearch}
+        toggleDrawerInfo={toggleDrawerInfo(true)}
       />
       <Global
         styles={{
@@ -308,7 +316,16 @@ function RestaurantPage() {
           {restorant?.currency && currencies[restorant?.currency]}
         </Button>
       </Slide>
-
+      {/* О ресторане */}
+      {restorant && (
+        <Swipeable
+          open={openInfo}
+          onClose={toggleDrawerInfo(false)}
+          onOpen={toggleDrawerInfo(true)}
+        >
+          <RestorantInfo {...restorant} />
+        </Swipeable>
+      )}
       {/* Корзина */}
       <Cart
         cart={cart}
@@ -317,7 +334,7 @@ function RestaurantPage() {
         onAddProduct={addProduct}
         onRremoveProduct={removeProduct}
         onDeleteCart={deleteCart}
-        onDish={toggleDrawer(true)}
+        onDish={(dish: dishesT) => toggleDrawer(dish)}
       />
       {/* Информация о блюде */}
       {dish && (
@@ -333,6 +350,7 @@ function RestaurantPage() {
             saveFavorites={saveFavorites}
             removeProduct={removeProduct}
             addProduct={addProduct}
+            onClose={toggleDrawer(false)}
           />
         </Swipeable>
       )}

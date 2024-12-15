@@ -66,7 +66,7 @@ function Sidebar(params: any) {
       <div
         style={{
           width: "100%",
-          height: "16rem",
+          aspectRatio: 16 / 9,
           backgroundImage: `url(${restorant?.image})`,
           backgroundSize: "cover",
           position: "absolute",
@@ -136,7 +136,7 @@ function Sidebar(params: any) {
         position="sticky"
         color="inherit"
         elevation={0}
-        style={{ borderRadius: "1rem 1rem 0 0", marginTop: "14.5rem" }}
+        style={{ borderRadius: "1rem 1rem 0 0", marginTop: "14rem" }}
       >
         <Container maxWidth="xl" sx={{ padding: 0 }}>
           <Toolbar disableGutters>
@@ -145,14 +145,24 @@ function Sidebar(params: any) {
               noWrap
               sx={{
                 padding: "1rem",
-                display: { xs: "flex", md: "none" },
+                // display: { xs: "flex", md: "none" },
+                display: "flex",
+                justifyContent: "space-between",
                 flexGrow: 1,
+
                 fontWeight: 700,
                 color: "inherit",
                 textDecoration: "none",
               }}
             >
               {restorant?.name || "Logo"}
+              <IconButton
+                sx={{ color: "#ccc" }}
+                onClick={params.toggleDrawerInfo}
+                size="small"
+              >
+                <Info />
+              </IconButton>
             </Typography>
           </Toolbar>
         </Container>

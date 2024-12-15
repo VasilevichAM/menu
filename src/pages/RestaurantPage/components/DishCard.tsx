@@ -4,12 +4,13 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import { currencies, restorants } from "../../../mock";
-import { Button, CardActions, Checkbox, IconButton } from "@mui/material";
+import { Button, CardActions, Checkbox, Chip, IconButton } from "@mui/material";
 import { formatThousands } from "../../../utils";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { Star } from "@mui/icons-material";
 
 export default function DishCard(params: any) {
   const { dish } = params;
@@ -49,6 +50,19 @@ export default function DishCard(params: any) {
             >
               {dish.name}
             </Typography>
+            <div
+              style={{
+                display: "flex",
+
+                alignItems: "center",
+              }}
+            >
+              <Star
+                sx={{ fontSize: "12px", marginRight: "4px" }}
+                color="primary"
+              />
+              <small>4.5</small>
+            </div>
           </div>
           <Typography variant="caption" sx={{ color: "text.secondary" }}>
             {dish.description}
@@ -102,6 +116,7 @@ export default function DishCard(params: any) {
           </Button>
         )}
       </CardActions>
+
       <div
         style={{
           position: "absolute",

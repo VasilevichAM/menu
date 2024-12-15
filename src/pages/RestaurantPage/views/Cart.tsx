@@ -90,13 +90,13 @@ export default function Cart(params: any) {
         {params.cart.map((dish: any) => {
           return (
             <Collapse key={dish} in={true}>
-              <ListItemButton onClick={() => params.onDish()}>
+              <ListItemButton onClick={params.onDish(dish)}>
                 <ListItemAvatar sx={{ mr: 2 }}>
                   <Avatar
                     alt={dish.name}
                     src={dish.image}
                     variant="rounded"
-                    sx={{ width: 56, height: 56 }}
+                    sx={{ width: 56, height: 56, borderRadius: "12px" }}
                   />
                 </ListItemAvatar>
                 <ListItemText
@@ -108,7 +108,7 @@ export default function Cart(params: any) {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  margin: "0 1rem 0 4rem",
+                  margin: "0 1rem 0 5.5rem",
                 }}
               >
                 <DeleteAddButtons
@@ -116,7 +116,7 @@ export default function Cart(params: any) {
                   onAddProduct={() => params.onAddProduct(dish)}
                   onRremoveProduct={() => params.onRremoveProduct(dish.id)}
                 />
-                <Typography variant="h6">
+                <Typography variant="body1">
                   {formatThousands(dish.price * dish.quantity)}{" "}
                   {restorants[0].currency &&
                     currencies[restorants[0]?.currency]}

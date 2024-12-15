@@ -1,4 +1,4 @@
-import { IconButton } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
@@ -7,30 +7,30 @@ export default function DeleteAddButtons(params: any) {
     <div
       style={{
         display: "flex",
-        justifyContent: "space-evenly",
         alignItems: "center",
-        flexGrow: 1 / 3,
-        borderRadius: "0.5rem",
+        // width: "110px",
+        justifyContent: "space-between",
       }}
     >
       <IconButton
         aria-label="Remove"
+        disabled={params.count === 1}
         size="small"
         onClick={(e) => {
           e.stopPropagation();
-          e.preventDefault();
+          // e.preventDefault();
           params.onRremoveProduct();
         }}
       >
         <RemoveIcon />
       </IconButton>
-      <span>{params.count}</span>
+      <Typography variant="body1">{params.count}</Typography>
       <IconButton
         aria-label="Add"
         size="small"
         onClick={(e) => {
           e.stopPropagation();
-          e.preventDefault();
+          // e.preventDefault();
           params.onAddProduct();
         }}
       >

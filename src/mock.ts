@@ -5,14 +5,14 @@ export const restorants = [
     id: 1,
     name: "Oven cafe",
     type: "Italian",
-    // city: "City 1",
-    // address: "Address 1",
+    city: "City 1",
+    address: "Address 1",
     // phone: "123456789",
     // email: "email@email.com",
+
     currency: "EUR",
     language: "et",
-    image:
-      "https://media.admagazine.ru/photos/620638ec3870c8c0c4829ac5/4:3/w_2660,h_1995,c_limit/d1.jpg",
+    image: "/mockImage/oven.webp",
     // logo: "https://marketplace.canva.com/EAFaFUz4aKo/2/0/400w/canva-yellow-abstract-cooking-fire-free-logo-8iEUG5R0yQ4.jpg",
     // location: "44.812619, 20.424597",
     // rating: 4.8,
@@ -510,7 +510,7 @@ export const restorants = [
         groupId: [9, 10],
       },
     ],
-    // info: "Исполнитель (продавец): ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСВЕННОСТЬЮ МУЛЬТИКУХНЯ, 123123123, 123213123, Москва, ул Авиаконструктора, д12, ИНН 777456345634, рег номер 12344241234434",
+    info: "Исполнитель (продавец): ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСВЕННОСТЬЮ МУЛЬТИКУХНЯ, 123123123, 123213123, Москва, ул Авиаконструктора, д12, ИНН 777456345634, рег номер 12344241234434",
   },
 ];
 

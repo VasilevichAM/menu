@@ -9,7 +9,7 @@ export default function DishList(params: any) {
         display: "grid",
         gridTemplateColumns: "repeat(2, 1fr)",
         gap: "1rem",
-        padding: "1rem 1rem 2rem",
+        padding: "1rem 1rem 5rem",
       }}
     >
       {Array.isArray(restorants[0]?.dishes) &&
