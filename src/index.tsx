@@ -7,24 +7,41 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   colorSchemes: {
-    dark: true,
+    light: {
+      palette: {
+        primary: {
+          light: "#ffa733",
+          main: "#ff9100",
+          dark: "#b26500",
+          contrastText: "#000",
+        },
+        secondary: {
+          light: "#424242",
+          main: "#212121",
+          dark: "#000",
+          contrastText: "#fff",
+        },
+      },
+    },
+    dark: {
+      palette: {
+        primary: {
+          light: "#ffa733",
+          main: "#ff9100",
+          dark: "#b26500",
+          contrastText: "#fff",
+        },
+        secondary: {
+          light: "#fff",
+          main: "#fafafa",
+          dark: "#f5f5f5",
+          contrastText: "#fff",
+        },
+      },
+    },
   },
   shape: {
-    borderRadius: 20,    // defaults to 4
-  },
-  palette: {
-    primary: {
-      light: "#757ce8",
-      main: "#3f50b5",
-      dark: "#002884",
-      contrastText: "#fff",
-    },
-    secondary: {
-      light: "#ff7961",
-      main: "#f44336",
-      dark: "#ba000d",
-      contrastText: "#000",
-    },
+    borderRadius: 20, // defaults to 4
   },
 });
 

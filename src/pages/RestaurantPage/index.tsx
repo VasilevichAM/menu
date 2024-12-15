@@ -31,6 +31,9 @@ import { TransitionProps } from "@mui/material/transitions";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
+import Sidebar from "./components/Sidebar";
+import Favorite from "./views/Favorite";
+import Search from "./views/Search";
 
 const fabStyle = {
   position: "fixed",
@@ -68,6 +71,8 @@ const magicCart: cartT[] = [
 function RestaurantPage() {
   const [dish, setDish] = React.useState<dishesT>();
   const [openCart, setOpenCart] = React.useState(false);
+  const [openFavorite, setOpenFavorite] = React.useState(false);
+  const [openSearch, setOpenSearch] = React.useState(false);
   const [cart, setCart] = useState<cartT[]>([]);
 
   // Функция для добавления продукта
@@ -176,6 +181,10 @@ function RestaurantPage() {
 
   return (
     <Root>
+      <Sidebar
+        setOpenFavorite={setOpenFavorite}
+        setOpenSearch={setOpenSearch}
+      />
       <Global
         styles={{
           ".MuiDrawer-root > .MuiPaper-root": {
@@ -257,6 +266,29 @@ function RestaurantPage() {
         <AutoFixHighOutlinedIcon />
       </Fab>
 
+      {/* Избранное */}
+      <Favorite
+        cart={cart}
+        favorites={favorites}
+        open={openFavorite}
+        onClose={() => setOpenFavorite(false)}
+        onAddProduct={addProduct}
+        onRremoveProduct={removeProduct}
+        // onDeleteCart={deleteCart}
+        onDish={toggleDrawer(true)}
+      />
+      {/* Поиск */}
+      <Search
+        cart={cart}
+        // favorites={favorites}
+        open={openSearch}
+        onClose={() => setOpenSearch(false)}
+        onAddProduct={addProduct}
+        onRremoveProduct={removeProduct}
+        // onDeleteCart={deleteCart}
+        onDish={toggleDrawer(true)}
+      />
+
       {/* Карзина */}
       <Slide
         direction="up"
@@ -277,6 +309,16 @@ function RestaurantPage() {
         </Button>
       </Slide>
 
+      {/* Корзина */}
+      <Cart
+        cart={cart}
+        open={openCart}
+        onClose={handleClose}
+        onAddProduct={addProduct}
+        onRremoveProduct={removeProduct}
+        onDeleteCart={deleteCart}
+        onDish={toggleDrawer(true)}
+      />
       {/* Информация о блюде */}
       {dish && (
         <Swipeable
@@ -294,18 +336,6 @@ function RestaurantPage() {
           />
         </Swipeable>
       )}
-
-      {/* Корзина */}
-      <Cart
-        cart={cart}
-        open={openCart}
-        onClose={handleClose}
-        onAddProduct={addProduct}
-        onRremoveProduct={removeProduct}
-        onDeleteCart={deleteCart}
-        onDish={toggleDrawer(true)}
-      />
-
       {/* Блюда */}
       {expanded !== null && (
         <Dialog

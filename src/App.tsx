@@ -14,15 +14,6 @@ const RestaurantsPage = lazy(() => import("./pages/RestaurantsPage"));
 const RestaurantPage = lazy(() => import("./pages/RestaurantPage"));
 const OrdersPage = lazy(() => import("./pages/OrdersPage"));
 
-const AppLayout = () => (
-  <>
-    <Sidebar />
-    <div>
-      <Outlet />
-    </div>
-  </>
-);
-
 function CenterSpinner() {
   return <CircularProgress sx={{ margin: "10rem" }} />;
 }
@@ -36,7 +27,7 @@ function App() {
       <CssBaseline />
       <Router>
         <Routes>
-          <Route element={<AppLayout />}>
+          <Route element={<Outlet />}>
             <Route path="/" element={suspense(<RestaurantsPage />)} />
             <Route
               path="/restaurant/:id"

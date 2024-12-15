@@ -16,3 +16,7 @@ html {
   scroll-padding-top: 7rem;
   scroll-behavior: smooth;
 }
+
+header.MuiAppBar-positionSticky:not(:first-child) {
+  border-radius: 0; /* Убираем border-radius у всех, кроме первого */
+}

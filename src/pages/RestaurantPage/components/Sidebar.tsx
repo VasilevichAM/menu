@@ -5,7 +5,7 @@ import Container from "@mui/material/Container";
 // import LightModeIcon from "@mui/icons-material/LightMode";
 // import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useParams } from "react-router-dom";
-import { restorants } from "../../mock";
+import { restorants } from "../../../mock";
 import React from "react";
 import {
   IconButton,
@@ -14,16 +14,22 @@ import {
   MenuItem,
   Tooltip,
 } from "@mui/material";
-import { Favorite, Info, ReceiptLong, Search } from "@mui/icons-material";
+import {
+  Favorite,
+  Info,
+  ReceiptLong,
+  Search,
+  Share,
+} from "@mui/icons-material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useTranslation } from "react-i18next";
 
-function Sidebar() {
+function Sidebar(params: any) {
   const { id = "0" } = useParams<{ id: string }>();
-  const { t } = useTranslation(["dish"]);
   const restorant = restorants.find(
     (restorant: { id: number }) => restorant.id === Number(id)
   );
+  const { t } = useTranslation(["dish"]);
   // const { mode, setMode } = useColorScheme();
   // if (!mode) {
   //   return null;
@@ -35,6 +41,24 @@ function Sidebar() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Заголовок вашей ссылки",
+          text: "Текст для общего доступа",
+          url: "https://example.com", // Замените на вашу ссылку
+        });
+        console.log("Успешно поделились!");
+      } catch (error) {
+        console.error("Ошибка при попытке поделиться:", error);
+      }
+    } else {
+      // Альтернативное поведение для браузеров, которые не поддерживают API
+      alert("К сожалению, ваш браузер не поддерживает функцию обмена.");
+    }
   };
 
   return (
@@ -50,6 +74,20 @@ function Sidebar() {
           textAlign: "end",
         }}
       >
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            right: "3rem",
+            borderRadius: "50%",
+            backgroundColor: "rgba(0, 0, 0,0.3)",
+            margin: "1rem",
+          }}
+        >
+          <IconButton sx={{ color: "#fff" }} onClick={handleShare} size="small">
+            <Share />
+          </IconButton>
+        </div>
         <div
           style={{
             position: "absolute",
@@ -129,29 +167,39 @@ function Sidebar() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            params.setOpenSearch(true);
+          }}
+        >
           <ListItemIcon>
             <Search fontSize="small" />
           </ListItemIcon>
-          Search
+          {t("search")}
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            params.setOpenFavorite(true);
+          }}
+        >
           <ListItemIcon>
             <Favorite fontSize="small" />
           </ListItemIcon>
-          {t("favorites")}
+          {t("favorite")}
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <ReceiptLong fontSize="small" />
           </ListItemIcon>
-          ReceiptLong
+          {t("orderHistory")}
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Info fontSize="small" />
           </ListItemIcon>
-          Info
+          {t("info")}
         </MenuItem>
       </Menu>
     </>

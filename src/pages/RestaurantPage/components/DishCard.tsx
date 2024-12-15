@@ -93,7 +93,7 @@ export default function DishCard(params: any) {
           <Button
             variant="outlined"
             fullWidth
-            // color=""
+            color="secondary"
             size="small"
             onClick={() => params.addProduct(dish)}
           >

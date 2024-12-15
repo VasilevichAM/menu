@@ -100,7 +100,7 @@ export default function Cart(params: any) {
                   />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={dish.name}
+                  primary={dish.name + dish.id}
                   secondary={dish.description}
                 />
               </ListItemButton>
@@ -130,6 +130,7 @@ export default function Cart(params: any) {
       </List>
       <Button
         variant="outlined"
+        color="secondary"
         startIcon={<AddIcon />}
         sx={{ margin: "1rem" }}
         onClick={params.onClose}
