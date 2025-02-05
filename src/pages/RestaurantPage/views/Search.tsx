@@ -28,7 +28,7 @@ import DeleteAddButtons from "../components/DeleteAddButtons";
 import type { cartT, dishesT } from "../../../types";
 import { formatThousands } from "../../../utils";
 import { useTranslation } from "react-i18next";
-import { currencies, restorants } from "../../../mock";
+import { currencies, restorant } from "../../../mock";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -101,7 +101,7 @@ export default function Search(params: any) {
       <List>
         {/* <TransitionGroup> */}
         {search.length > 0 &&
-          restorants[0]?.dishes
+          restorant?.dishes
             .filter(
               (dish) =>
                 dish.name.includes(search) || dish.description.includes(search)
@@ -147,8 +147,8 @@ export default function Search(params: any) {
                     />
                     <Typography variant="body2">
                       {formatThousands(dish.price)}{" "}
-                      {restorants[0].currency &&
-                        currencies[restorants[0]?.currency]}
+                      {restorant.currency &&
+                        currencies[restorant?.currency]}
                     </Typography>
                   </ListItemButton>
                   {/* <div

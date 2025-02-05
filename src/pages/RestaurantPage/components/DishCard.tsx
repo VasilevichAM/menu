@@ -3,7 +3,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
-import { currencies, restorants } from "../../../mock";
+import { currencies, restorant } from "../../../mock";
 import { Button, CardActions, Checkbox, Chip, IconButton } from "@mui/material";
 import { formatThousands } from "../../../utils";
 import AddIcon from "@mui/icons-material/Add";
@@ -112,7 +112,7 @@ export default function DishCard(params: any) {
             onClick={() => params.addProduct(dish)}
           >
             {formatThousands(dish.price)}{" "}
-            {restorants[0].currency && currencies[restorants[0]?.currency]}
+            {restorant.currency && currencies[restorant?.currency]}
           </Button>
         )}
       </CardActions>

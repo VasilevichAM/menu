@@ -5,7 +5,7 @@ import Container from "@mui/material/Container";
 // import LightModeIcon from "@mui/icons-material/LightMode";
 // import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useParams } from "react-router-dom";
-import { restorants } from "../../../mock";
+import { restorant } from "../../../mock";
 import React from "react";
 import {
   IconButton,
@@ -25,10 +25,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useTranslation } from "react-i18next";
 
 function Sidebar(params: any) {
-  const { id = "0" } = useParams<{ id: string }>();
-  const restorant = restorants.find(
-    (restorant: { id: number }) => restorant.id === Number(id)
-  );
+  // const { id = "0" } = useParams<{ id: string }>();
   const { t } = useTranslation(["dish"]);
   // const { mode, setMode } = useColorScheme();
   // if (!mode) {

@@ -41,3 +41,5 @@ export type ordersT = {
   time: string;
   status?: number; // 0 - новый заказ, 1 - заказ оплачен, 2 - заказ отменен
 };
+
+export type State = "pending" | "done" | "error";

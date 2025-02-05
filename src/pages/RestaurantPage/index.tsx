@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
-import { currencies, restorants } from "../../mock";
+import { currencies, restorant } from "../../mock";
 import {
   AppBar,
   Button,
@@ -77,9 +77,9 @@ function RestaurantPage() {
   const random3 = Math.ceil(Math.random() * 39);
 
   const magicCart: cartT[] = [
-    { ...restorants[0].dishes[random1], quantity: 1 },
-    { ...restorants[0].dishes[random2], quantity: 1 },
-    { ...restorants[0].dishes[random3], quantity: 1 },
+    { ...restorant.dishes[random1], quantity: 1 },
+    { ...restorant.dishes[random2], quantity: 1 },
+    { ...restorant.dishes[random3], quantity: 1 },
   ];
 
   // Функция для добавления продукта
@@ -165,9 +165,6 @@ function RestaurantPage() {
   };
 
   const { id = "0" } = useParams<{ id: string }>();
-  const restorant = restorants.find(
-    (restorant: { id: number }) => restorant.id === Number(id)
-  );
 
   const [open, setOpen] = React.useState(false);
 

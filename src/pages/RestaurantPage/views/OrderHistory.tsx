@@ -27,7 +27,7 @@ import DeleteAddButtons from "../components/DeleteAddButtons";
 import type { cartT, dishesT } from "../../../types";
 import { formatThousands } from "../../../utils";
 import { useTranslation } from "react-i18next";
-import { currencies, restorants } from "../../../mock";
+import { currencies, restorant } from "../../../mock";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -92,7 +92,7 @@ export default function OrderHistory(params: any) {
       </AppBar>
       <List>
         {/* <TransitionGroup> */}
-        {restorants[0]?.dishes
+        {restorant?.dishes
           .filter(
             (dish) =>
               Array.isArray(params.favorites) &&
@@ -139,8 +139,8 @@ export default function OrderHistory(params: any) {
                   />
                   <Typography variant="body2">
                     {formatThousands(dish.price)}{" "}
-                    {restorants[0].currency &&
-                      currencies[restorants[0]?.currency]}
+                    {restorant.currency &&
+                      currencies[restorant?.currency]}
                   </Typography>
                 </ListItemButton>
                 {/* <div

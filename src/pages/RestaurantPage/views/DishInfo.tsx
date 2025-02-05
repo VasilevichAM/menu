@@ -12,7 +12,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteAddButtons from "../components/DeleteAddButtons";
 import { useTranslation } from "react-i18next";
 import { formatThousands } from "../../../utils";
-import { currencies, restorants } from "../../../mock";
+import { currencies, restorant } from "../../../mock";
 import { Chat, Close, Share, Star } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 
@@ -198,7 +198,7 @@ export default function DishInfo(params: any) {
           }}
         >
           {formatThousands(dish.price * count)}{" "}
-          {restorants[0].currency && currencies[restorants[0]?.currency]}
+          {restorant.currency && currencies[restorant?.currency]}
         </Button>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { restorants } from "../../../mock";
+import { restorant } from "../../../mock";
 import DishCard from "../components/DishCard";
 
 export default function DishList(params: any) {
@@ -12,9 +12,9 @@ export default function DishList(params: any) {
         padding: "1rem 1rem 5rem",
       }}
     >
-      {Array.isArray(restorants[0]?.dishes) &&
-      restorants[0]?.dishes?.length > 0 ? (
-        restorants[0]?.dishes
+      {Array.isArray(restorant?.dishes) &&
+      restorant?.dishes?.length > 0 ? (
+        restorant?.dishes
           .filter((dish) => dish.groupId.includes(params.group.id))
           .map((dish) => {
             return (
